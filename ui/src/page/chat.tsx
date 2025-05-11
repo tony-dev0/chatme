@@ -34,7 +34,7 @@ const ChatLayout = () => {
     useState<RTCPeerConnection | null>(null);
 
   useEffect(() => {
-    socket.current = io("ws://chatme-socket-server.vercel.app");
+    socket.current = io(import.meta.env.VITE_SOCKET_URL);
     socket.current.on("getMessage", (data: any) => {
       setArrivalMessage({
         sender: data.senderId,

@@ -10,7 +10,7 @@ import "./assets/css/chatme.css";
 import axios from "axios";
 
 function App() {
-  axios.defaults.baseURL = "https://chatme-api.vercel.app/api";
+  axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
   axios.defaults.withCredentials = true;
   const { user } = useContext(AuthContext);
 
