@@ -12,12 +12,11 @@ const messageRoute = require("./routes/messages");
 dotenv.config();
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://192.168.14.89:3000"],
-  // origin: ["http://localhost:3000"],
-
+  origin: [process.env.ORIGIN],
   methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
   credentials: true,
 };
+
 const uri = process.env.MONGO_URL;
 const connect = async () => {
   try {

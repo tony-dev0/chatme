@@ -3,7 +3,7 @@ dotenv.config();
 
 const io = require("socket.io")(process.env.PORT, {
   cors: {
-    origin: [process.env.ORIGIN, "http://192.168.14.89:3000"],
+    origin: [process.env.ORIGIN],
   },
 });
 
