@@ -3,9 +3,7 @@ import ChatInput from "../components/ChatInput";
 import ChatList from "../components/ChatList";
 import MALE from "../assets/avatars/male.jpg";
 import FEMALE from "../assets/avatars/female.jpg";
-import vid from "../assets/blah.mp4";
-import myvideo from "../assets/myvideo.mp4";
-import { useCallback, useContext, useRef } from "react";
+import { useContext, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import ChatTop from "../components/ChatTop";
 import logo from "../assets/logo128.png";
@@ -62,14 +60,14 @@ const ChatLayout = () => {
       socket.current.emit("answer", { to: from, answer });
     });
 
-    socket.current.on("answer-received", async ({ from, answer }: any) => {
+    socket.current.on("answer-received", async ({ answer }: any) => {
       if (!peerConnection) return;
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(answer)
       );
     });
 
-    socket.current.on("ice-candidate", async ({ from, candidate }: any) => {
+    socket.current.on("ice-candidate", async ({ candidate }: any) => {
       if (!peerConnection) return;
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });

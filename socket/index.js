@@ -84,7 +84,7 @@ io.on("connection", (socket) => {
   socket.on("answer", ({ to, answer }) => {
     const user = getUser(to);
     if (user) {
-      io.to(user.socketId).emit("answer-received", { from: socket.id, answer });
+      io.to(user.socketId).emit("answer-received", { answer });
     }
   });
 
@@ -92,7 +92,6 @@ io.on("connection", (socket) => {
     const user = getUser(to);
     if (user) {
       io.to(user.socketId).emit("ice-candidate", {
-        from: socket.id,
         candidate,
       });
     }

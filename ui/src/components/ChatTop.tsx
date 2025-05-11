@@ -8,7 +8,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const ChatTop = ({ user, receiver, onlineUsers, startVideoCall }: any) => {
-  const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -82,8 +81,6 @@ const ChatTop = ({ user, receiver, onlineUsers, startVideoCall }: any) => {
                   className="p-0 bg-transparent border-0"
                   id="dropdown-basic"
                   aria-haspopup="true"
-                  // aria-expanded={show}
-                  // onClick={() => setShow((prev) => !prev)}
                 >
                   <i className="material-icons md-30">more_vert</i>
                 </Dropdown.Toggle>
