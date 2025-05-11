@@ -1,0 +1,54 @@
+const express = require("express");
+const app = express();
+const cors = require("cors");
+const mongoose = require("mongoose");
+const dotenv = require("dotenv");
+const helmet = require("helmet");
+const morgan = require("morgan"); // Add morgan for HTTP request logging
+const userRoute = require("./routes/users");
+const authRoute = require("./routes/auth");
+const messageRoute = require("./routes/messages");
+
+dotenv.config();
+
+const corsOptions = {
+  origin: ["http://localhost:3000", "http://192.168.14.89:3000"],
+  // origin: ["http://localhost:3000"],
+
+  methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
+  credentials: true,
+};
+const uri = process.env.MONGO_URL;
+const connect = async () => {
+  try {
+    await mongoose.connect(uri);
+    console.log("connected to mongoDB");
+  } catch (err) {
+    throw err;
+  }
+};
+
+//middleware
+app.use(cors(corsOptions));
+app.use(express.json());
+app.use(helmet());
+app.use(morgan("dev")); // Use morgan middleware for logging
+
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+app.use("/api/messages", messageRoute);
+
+mongoose.connection.on("disconnected", () => {
+  console.log("mongoDB disconnected");
+});
+mongoose.connection.on("connected", () => {
+  console.log("mongoDB connected");
+});
+mongoose.connection.on("error", (err) => {
+  console.log("mongoDB ERR - ", err);
+});
+
+app.listen(8000, () => {
+  connect();
+  console.log("Backend server is running!");
+});

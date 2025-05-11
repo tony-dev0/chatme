@@ -1,0 +1,17 @@
+build/
+
+node_modules
+
+api.code-workspace
+client.code-workspace
+
+Edited
+
+trash
+
+*.txt
+
+.vscode
+
+*.env
+
