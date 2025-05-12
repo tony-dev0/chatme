@@ -20,14 +20,14 @@ const corsOptions = {
 const uri = process.env.MONGO_URL;
 const connect = async () => {
   try {
-    await mongoose.connect(uri);
+    await mongoose.connect(String(uri));
     console.log("connected to mongoDB");
   } catch (err) {
     throw err;
   }
 };
 app.get("/", (req, res) => {
-  res.send(`Hello from home route ${process.env.ORIGIN}`);
+  res.send(`Hello from home route ${process.env.MONGO_URL}`);
 });
 //middleware
 app.use(cors(corsOptions));
