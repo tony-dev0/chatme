@@ -14,6 +14,7 @@ dotenv.config();
 const corsOptions = {
   origin: [process.env.ORIGIN],
   methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
+  credentials: true,
 };
 
 const connect = async () => {
