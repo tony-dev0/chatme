@@ -26,7 +26,7 @@ const connect = async () => {
   }
 };
 app.get("/", (req, res) => {
-  res.send(`Hello from home route ${process.env.MONGO_URL}`);
+  res.send("Backend server is running!");
 });
 //middleware
 app.use(cors(corsOptions));

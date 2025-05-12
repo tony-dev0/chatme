@@ -49,8 +49,7 @@ router.get("/", async (req, res) => {
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
-    console.error(err);
-    res.status(500).json(err);
+    console.log(err);
   }
 });
 
