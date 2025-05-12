@@ -17,10 +17,9 @@ const corsOptions = {
   methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
 };
 
-const uri = process.env.MONGO_URL;
 const connect = async () => {
   try {
-    await mongoose.connect(String(uri));
+    await mongoose.connect(String(process.env.MONGO_URL));
     console.log("connected to mongoDB");
   } catch (err) {
     throw err;
