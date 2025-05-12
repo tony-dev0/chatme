@@ -17,7 +17,7 @@ const corsOptions = {
   methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
 };
 
-const uri = process.env.LIVE_MONGO_URL;
+const uri = process.env.MONGO_URL;
 const connect = async () => {
   try {
     await mongoose.connect(uri);
@@ -26,7 +26,9 @@ const connect = async () => {
     throw err;
   }
 };
-
+app.get("/", (req, res) => {
+  res.send(`Hello from home route ${process.env.ORIGIN}`);
+});
 //middleware
 app.use(cors(corsOptions));
 app.use(express.json());
