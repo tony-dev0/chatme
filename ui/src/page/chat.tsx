@@ -32,7 +32,13 @@ const ChatLayout = () => {
     useState<RTCPeerConnection | null>(null);
 
   useEffect(() => {
-    socket.current = io(import.meta.env.VITE_SOCKET_URL);
+    socket.current = io(import.meta.env.VITE_SOCKET_URL, {
+      transports: ["websocket"],
+      secure: true,
+    });
+    socket.current.on("connect_error", (err: any) => {
+      console.log(`connect_error due to ${err.message}`);
+    });
     socket.current.on("getMessage", (data: any) => {
       setArrivalMessage({
         sender: data.senderId,
