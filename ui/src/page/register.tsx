@@ -65,7 +65,6 @@ const Register: React.FC = () => {
                 type="email"
                 className="form-control"
                 name="email"
-                id=""
                 placeholder="Email address"
                 ref={email}
               />
@@ -73,7 +72,6 @@ const Register: React.FC = () => {
                 type="text"
                 className="form-control"
                 name="username"
-                id=""
                 placeholder="Username"
                 ref={username}
               />
@@ -92,7 +90,6 @@ const Register: React.FC = () => {
                 type="password"
                 className="form-control"
                 name="password"
-                id=""
                 placeholder="Password"
                 ref={password}
               />
@@ -100,7 +97,6 @@ const Register: React.FC = () => {
                 type="password"
                 className="form-control"
                 name="cpassword"
-                id=""
                 placeholder="Confirm Password"
                 ref={passwordConfirm}
               />
