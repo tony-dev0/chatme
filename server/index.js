@@ -45,6 +45,7 @@ mongoose.connection.on("connected", () => {
 });
 mongoose.connection.on("error", (err) => {
   console.log("mongoDB ERR - ", err);
+  return res.status(500).json("An error occurred in mongoDB");
 });
 
 app.listen(8000, () => {
