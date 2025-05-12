@@ -51,7 +51,7 @@ router.get("/", async (req, res) => {
     const { password, updatedAt, ...other } = user._doc;
     res.status(200).json(other);
   } catch (err) {
-    console.error("An error occurred in get userjs - ");
+    console.error(err);
     res.status(500).json(err);
   }
 });
