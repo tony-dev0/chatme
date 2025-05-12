@@ -12,7 +12,8 @@ const messageRoute = require("./routes/messages");
 dotenv.config();
 
 const corsOptions = {
-  origin: [process.env.ORIGIN],
+  // origin: [process.env.ORIGIN],
+  origin: "*",
   methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
   credentials: true,
 };
