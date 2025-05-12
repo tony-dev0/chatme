@@ -15,7 +15,6 @@ const corsOptions = {
   // origin: [process.env.ORIGIN],
   origin: "*",
   methods: ["POST", "GET", "PUT", "PATCH", "DELETE"],
-  credentials: true,
 };
 
 const uri = process.env.MONGO_URL;
