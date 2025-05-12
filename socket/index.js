@@ -3,7 +3,9 @@ dotenv.config();
 
 const io = require("socket.io")(process.env.PORT, {
   cors: {
-    origin: [process.env.ORIGIN],
+    // origin: [process.env.ORIGIN],
+    origin: ["https://chatme-messenger-eight.vercel.app/"],
+    methods: ["GET", "POST"],
     credentials: true,
   },
 });
