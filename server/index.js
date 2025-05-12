@@ -42,11 +42,9 @@ mongoose.connection.on("disconnected", () => {
 });
 mongoose.connection.on("connected", () => {
   console.log("mongoDB connected");
-  res.status(200).json("MongoDB is connected");
 });
 mongoose.connection.on("error", (err) => {
   console.log("mongoDB ERR - ", err);
-  res.status(500).json("An error occurred in mongoDB");
 });
 
 app.listen(8000, () => {
