@@ -37,7 +37,7 @@ const ChatLayout = () => {
       secure: true,
     });
     socket.current.on("connect_error", (err: any) => {
-      console.log(`connect_error due to ${err.message}`);
+      console.warn(`connect_error due to ${err.message}`);
     });
     socket.current.on("getMessage", (data: any) => {
       setArrivalMessage({
@@ -49,7 +49,7 @@ const ChatLayout = () => {
     });
     socket.current.on("incoming-call", (caller: any) => {
       if (outgoingCall || IncomingCall) {
-        console.log("line busy");
+        console.warn("line busy");
         return;
       }
       setCaller(caller);
@@ -57,9 +57,9 @@ const ChatLayout = () => {
     });
 
     socket.current.on("offer-received", async ({ from, offer }: any) => {
-      console.log("offer received from");
+      console.warn("offer received from");
       if (!peerConnection) return;
-      console.log("(offer)peer connection not null");
+      console.warn("(offer)peer connection not null");
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(offer)
       );
@@ -69,24 +69,24 @@ const ChatLayout = () => {
     });
 
     socket.current.on("answer-received", async ({ answer }: any) => {
-      console.log("answer received from");
+      console.warn("answer received from");
       if (!peerConnection) return;
-      console.log("(answer)peer connection not null");
+      console.warn("(answer)peer connection not null");
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(answer)
       );
     });
 
     socket.current.on("call-answered", async ({ from }: any) => {
-      console.log(`call from ${from} answered`);
+      console.warn(`call from ${from} answered`);
       setOutgoingCall(false);
       setOnVideoCall(true);
     });
 
     socket.current.on("ice-candidate", async ({ candidate }: any) => {
-      console.log("ice-candidate received");
+      console.warn("ice-candidate received");
       if (!peerConnection) return;
-      console.log("(ice-candidate)peer connection not null");
+      console.warn("(ice-candidate)peer connection not null");
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });
 
@@ -233,7 +233,7 @@ const ChatLayout = () => {
     }
     setOnVideoCall(false);
     socket.current.emit("end-call", { to: receiver?._id || caller?._id });
-    console.log("call ended");
+    console.warn("call ended");
   };
 
   return (
