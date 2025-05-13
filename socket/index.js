@@ -70,10 +70,10 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("call-accepted", ({ to, answer }) => {
+  socket.on("call-accepted", ({ to }) => {
     const user = getUser(to);
     if (user) {
-      io.to(user.socketId).emit("call-answered", { from: socket.id, answer });
+      io.to(user.socketId).emit("call-answered", { from: socket.id });
     }
   });
 

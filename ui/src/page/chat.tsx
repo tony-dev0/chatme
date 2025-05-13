@@ -73,6 +73,12 @@ const ChatLayout = () => {
       );
     });
 
+    socket.current.on("call-answered", async ({ from }: any) => {
+      console.log(`call from ${from} answered`);
+      setOutgoingCall(false);
+      setOnVideoCall(true);
+    });
+
     socket.current.on("ice-candidate", async ({ candidate }: any) => {
       if (!peerConnection) return;
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
@@ -195,6 +201,7 @@ const ChatLayout = () => {
   const cancelCall = () => {
     setIncomingCall(false);
     setOutgoingCall(false);
+    setOnVideoCall(false);
   };
 
   const endCall = () => {
@@ -218,10 +225,7 @@ const ChatLayout = () => {
       tracks.forEach((track) => track.stop());
       remoteVideoRef.current.srcObject = null;
     }
-
     setOnVideoCall(false);
-    setIncomingCall(false);
-    setOutgoingCall(false);
     socket.current.emit("end-call", { to: receiver?._id || caller?._id });
   };
 
@@ -250,7 +254,11 @@ const ChatLayout = () => {
         </div>
         <div className="main">
           <div
-            className={outgoingCall || IncomingCall ? "chat d-none" : "chat"}
+            className={
+              onVideoCall || outgoingCall || IncomingCall
+                ? "chat d-none"
+                : "chat"
+            }
             id="chat1"
           >
             <ChatTop
