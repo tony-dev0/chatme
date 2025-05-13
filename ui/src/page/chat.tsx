@@ -57,7 +57,7 @@ const ChatLayout = () => {
     });
 
     socket.current.on("offer-received", async ({ from, offer }: any) => {
-      console.warn("offer received from");
+      console.warn("offer received from", offer);
       if (!peerConnection) return;
       console.warn("(offer)peer connection not null");
       await peerConnection.setRemoteDescription(
@@ -69,7 +69,7 @@ const ChatLayout = () => {
     });
 
     socket.current.on("answer-received", async ({ answer }: any) => {
-      console.warn("answer received from");
+      console.warn("answer received from", answer);
       if (!peerConnection) return;
       console.warn("(answer)peer connection not null");
       await peerConnection.setRemoteDescription(
@@ -206,11 +206,6 @@ const ChatLayout = () => {
     }
   };
 
-  // const cancelCall = () => {
-  //   setIncomingCall(false);
-  //   setOutgoingCall(false);
-  //   setOnVideoCall(false);
-  // };
   const closeCallConnection = () => {
     if (peerConnection) {
       peerConnection.close();
