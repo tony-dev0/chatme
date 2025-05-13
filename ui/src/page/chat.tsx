@@ -196,7 +196,6 @@ const ChatLayout = () => {
 
       const pc = await setupPeerConnection();
       stream.getTracks().forEach((track) => pc.addTrack(track, stream));
-
       setIncomingCall(false);
       setOnVideoCall(true);
       socket.current.emit("call-accepted", { to: caller._id });
@@ -233,7 +232,7 @@ const ChatLayout = () => {
   };
   const endCall = () => {
     closeCallConnection();
-    socket.current.emit("end-call", { to: receiver?._id || user._id });
+    socket.current.emit("end-call", { to: receiver?._id || caller._id });
   };
 
   return (

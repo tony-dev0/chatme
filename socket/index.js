@@ -71,8 +71,10 @@ io.on("connection", (socket) => {
   });
 
   socket.on("call-accepted", ({ to }) => {
+    console.log("call-accepted block");
     const user = getUser(to);
     if (user) {
+      console.log("emitting call-answered");
       io.to(user.socketId).emit("call-answered", { from: socket.id });
     }
   });
