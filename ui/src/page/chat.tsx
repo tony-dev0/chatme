@@ -90,7 +90,7 @@ const ChatLayout = () => {
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });
 
-    socket.current.on("call-ended", (to: any) => {
+    socket.current.on("call-ended", ({ to }: any) => {
       console.log("socket call ended entered", to);
       endCall();
     });
