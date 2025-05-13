@@ -236,7 +236,7 @@ const ChatLayout = () => {
     setOnVideoCall(false);
     setOutgoingCall(false);
     setIncomingCall(false);
-    socket.current.emit("end-call", { to: receiver?._id });
+    socket.current.emit("end-call", { to: receiver?._id || user._id });
   };
 
   return (
