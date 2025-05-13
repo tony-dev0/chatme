@@ -92,7 +92,7 @@ const ChatLayout = () => {
 
     socket.current.on("call-ended", ({ to }: any) => {
       console.log("socket call ended entered", to);
-      endCall();
+      closeCallConnection();
     });
   }, []);
 
@@ -211,8 +211,7 @@ const ChatLayout = () => {
   //   setOutgoingCall(false);
   //   setOnVideoCall(false);
   // };
-
-  const endCall = () => {
+  const closeCallConnection = () => {
     if (peerConnection) {
       peerConnection.close();
       setPeerConnection(null);
@@ -236,6 +235,9 @@ const ChatLayout = () => {
     setOnVideoCall(false);
     setOutgoingCall(false);
     setIncomingCall(false);
+  };
+  const endCall = () => {
+    closeCallConnection();
     socket.current.emit("end-call", { to: receiver?._id || user._id });
   };
 
