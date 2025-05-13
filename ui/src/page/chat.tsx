@@ -206,11 +206,11 @@ const ChatLayout = () => {
     }
   };
 
-  const cancelCall = () => {
-    setIncomingCall(false);
-    setOutgoingCall(false);
-    setOnVideoCall(false);
-  };
+  // const cancelCall = () => {
+  //   setIncomingCall(false);
+  //   setOutgoingCall(false);
+  //   setOnVideoCall(false);
+  // };
 
   const endCall = () => {
     if (peerConnection) {
