@@ -234,8 +234,9 @@ const ChatLayout = () => {
       remoteVideoRef.current.srcObject = null;
     }
     setOnVideoCall(false);
+    setOutgoingCall(false);
+    setIncomingCall(false);
     socket.current.emit("end-call", { to: receiver?._id });
-    console.warn("call ended");
   };
 
   return (
