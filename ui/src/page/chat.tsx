@@ -57,7 +57,9 @@ const ChatLayout = () => {
     });
 
     socket.current.on("offer-received", async ({ from, offer }: any) => {
+      console.log("offer received from");
       if (!peerConnection) return;
+      console.log("(offer)peer connection not null");
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(offer)
       );
@@ -67,7 +69,9 @@ const ChatLayout = () => {
     });
 
     socket.current.on("answer-received", async ({ answer }: any) => {
+      console.log("answer received from");
       if (!peerConnection) return;
+      console.log("(answer)peer connection not null");
       await peerConnection.setRemoteDescription(
         new RTCSessionDescription(answer)
       );
@@ -80,7 +84,9 @@ const ChatLayout = () => {
     });
 
     socket.current.on("ice-candidate", async ({ candidate }: any) => {
+      console.log("ice-candidate received");
       if (!peerConnection) return;
+      console.log("(ice-candidate)peer connection not null");
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });
 
@@ -227,6 +233,7 @@ const ChatLayout = () => {
     }
     setOnVideoCall(false);
     socket.current.emit("end-call", { to: receiver?._id || caller?._id });
+    console.log("call ended");
   };
 
   return (
