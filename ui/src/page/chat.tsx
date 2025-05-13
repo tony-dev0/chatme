@@ -90,7 +90,8 @@ const ChatLayout = () => {
       await peerConnection.addIceCandidate(new RTCIceCandidate(candidate));
     });
 
-    socket.current.on("call-ended", () => {
+    socket.current.on("call-ended", (to: any) => {
+      console.log("socket call ended entered", to);
       endCall();
     });
   }, []);
@@ -152,6 +153,7 @@ const ChatLayout = () => {
   };
 
   const startVideoCall = async () => {
+    console.warn("start video call");
     try {
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
@@ -232,7 +234,7 @@ const ChatLayout = () => {
       remoteVideoRef.current.srcObject = null;
     }
     setOnVideoCall(false);
-    socket.current.emit("end-call", { to: receiver?._id || caller?._id });
+    socket.current.emit("end-call", { to: receiver?._id });
     console.warn("call ended");
   };
 

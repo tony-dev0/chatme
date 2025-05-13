@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
   socket.on("end-call", ({ to }) => {
     const user = getUser(to);
     if (user) {
-      io.to(user.socketId).emit("call-ended");
+      io.to(user.socketId).emit("call-ended", { to: socket.id });
     }
   });
 
