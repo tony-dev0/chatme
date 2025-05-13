@@ -318,7 +318,7 @@ const ChatLayout = () => {
 
                           <button
                             className="btn option call-end"
-                            onClick={cancelCall}
+                            onClick={endCall}
                           >
                             <i className="material-icons md-30">call_end</i>
                           </button>
@@ -360,7 +360,7 @@ const ChatLayout = () => {
                           </button>
                           <button
                             className="btn option call-end"
-                            onClick={cancelCall}
+                            onClick={endCall}
                           >
                             <i className="material-icons md-30">call_end</i>
                           </button>
