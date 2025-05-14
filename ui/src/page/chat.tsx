@@ -57,7 +57,7 @@ const ChatLayout = () => {
     });
 
     socket.current.on("offer-received", async ({ from, offer }: any) => {
-      console.warn("offer received from", offer);
+      // console.warn("offer received from", offer);
       if (!peerConnection) return;
       console.warn("(offer)peer connection not null");
       await peerConnection.setRemoteDescription(
@@ -198,7 +198,7 @@ const ChatLayout = () => {
       stream.getTracks().forEach((track) => pc.addTrack(track, stream));
       setIncomingCall(false);
       setOnVideoCall(true);
-      socket.current.emit("call-accepted", { to: caller._id });
+      socket.current.emit("call-accepted", { to: user._id });
     } catch (err) {
       console.error("Error answering call:", err);
       toast.error("Could not access camera or microphone");
@@ -232,7 +232,7 @@ const ChatLayout = () => {
   };
   const endCall = () => {
     closeCallConnection();
-    socket.current.emit("end-call", { to: receiver?._id || caller._id });
+    socket.current.emit("end-call", { to: receiver?._id || user._id });
   };
 
   return (
