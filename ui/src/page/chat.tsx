@@ -198,7 +198,7 @@ const ChatLayout = () => {
       stream.getTracks().forEach((track) => pc.addTrack(track, stream));
       setIncomingCall(false);
       setOnVideoCall(true);
-      socket.current.emit("call-accepted", { to: user._id });
+      socket.current.emit("call-accepted", { to: receiver?._id });
     } catch (err) {
       console.error("Error answering call:", err);
       toast.error("Could not access camera or microphone");
