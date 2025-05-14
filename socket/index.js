@@ -71,7 +71,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("call-accepted", ({ to }) => {
-    console.log("call-accepted block");
+    console.log("call-accepted block here");
     const user = getUser(to);
     if (user) {
       console.log("call-accepted user found");
