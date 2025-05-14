@@ -128,7 +128,10 @@ const ChatLayout = () => {
 
   const setupPeerConnection = async () => {
     const configuration = {
-      iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+      iceServers: [
+        { urls: "stun:stun.l.google.com:19302" },
+        { urls: "stun:stun1.l.google.com:19302" },
+      ],
     };
 
     const pc = new RTCPeerConnection(configuration);
@@ -136,16 +139,21 @@ const ChatLayout = () => {
     pc.onicecandidate = (event) => {
       if (event.candidate) {
         socket.current.emit("ice-candidate", {
-          to: receiver._id,
+          to: receiver?._id || caller?.username,
           candidate: event.candidate,
         });
       }
     };
 
     pc.ontrack = (event) => {
-      if (remoteVideoRef.current) {
+      console.log("Received remote track:", event.streams[0]);
+      if (remoteVideoRef.current && event.streams[0]) {
         remoteVideoRef.current.srcObject = event.streams[0];
       }
+    };
+
+    pc.oniceconnectionstatechange = () => {
+      console.log("ICE connection state:", pc.iceConnectionState);
     };
 
     setPeerConnection(pc);
@@ -196,9 +204,12 @@ const ChatLayout = () => {
 
       const pc = await setupPeerConnection();
       stream.getTracks().forEach((track) => pc.addTrack(track, stream));
+
+      // Set caller as the receiver for the person answering
+      setCallReceiver(caller);
       setIncomingCall(false);
       setOnVideoCall(true);
-      socket.current.emit("call-accepted", { to: callReceiver?._id });
+      socket.current.emit("call-accepted", { to: caller?.username });
     } catch (err) {
       console.error("Error answering call:", err);
       toast.error("Could not access camera or microphone");
@@ -375,14 +386,20 @@ const ChatLayout = () => {
             <div className="call d-block bg-dark-light h-100">
               <div className="col-md-12">
                 <div className="video-stream">
-                  <video ref={localVideoRef} autoPlay className="local-video" />
-
+                  {" "}
+                  <video
+                    ref={localVideoRef}
+                    autoPlay
+                    playsInline
+                    muted
+                    className="local-video"
+                  />
                   <video
                     ref={remoteVideoRef}
                     className="remote-video"
                     autoPlay
+                    playsInline
                   />
-
                   <div className="videocall-btn">
                     <div>
                       <button className="btn option">
