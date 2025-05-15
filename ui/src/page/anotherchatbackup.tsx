@@ -46,11 +46,19 @@ const ChatLayout = () => {
       localVideoRef.current.srcObject = stream;
     }
   };
+
   const attachRemoteStream = (event: RTCTrackEvent) => {
-    console.log("Received remote track", event.streams[0]);
-    if (remoteVideoRef.current && event.streams[0]) {
-      remoteVideoRef.current.srcObject = event.streams[0];
+    if (remoteVideoRef.current) {
+      const [remoteStream] = remoteVideoRef.current.srcObject
+        ? [remoteVideoRef.current.srcObject as MediaStream]
+        : [new MediaStream()];
+      remoteStream.addTrack(event.track);
+      remoteVideoRef.current.srcObject = remoteStream;
     }
+    console.log(
+      "(mainfunc)remote stream is - ",
+      remoteVideoRef.current?.srcObject
+    );
   };
 
   useEffect(() => {
@@ -219,12 +227,14 @@ const ChatLayout = () => {
       closeCallConnection();
     }
   };
+
   const answerCall = async () => {
     try {
       setIncomingCall(false);
       setOnVideoCall(true);
+      socket.current.emit("call-accepted", { to: caller._id });
 
-      // Get local media stream first
+      // Get local media stream
       const stream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
@@ -241,12 +251,7 @@ const ChatLayout = () => {
       });
 
       // Handle incoming tracks (remote stream)
-      peerConnection.current.ontrack = (event) => {
-        console.log("Received remote track", event.streams[0]);
-        if (remoteVideoRef.current) {
-          remoteVideoRef.current.srcObject = event.streams[0];
-        }
-      };
+      peerConnection.current.ontrack = attachRemoteStream;
 
       // Handle and send ICE candidates
       peerConnection.current.onicecandidate = (event) => {
@@ -257,9 +262,6 @@ const ChatLayout = () => {
           });
         }
       };
-
-      // Now notify the caller that we've accepted
-      socket.current.emit("call-accepted", { to: caller._id });
       console.log(
         "(answer call)remote video - ",
         remoteVideoRef.current?.srcObject
@@ -436,13 +438,18 @@ const ChatLayout = () => {
             <div className="call d-block bg-dark-light h-100">
               <div className="col-md-12">
                 <div className="video-stream">
-                  {" "}
-                  <video ref={localVideoRef} autoPlay className="local-video" />
+                  <video
+                    ref={remoteVideoRef}
+                    autoPlay
+                    className="local-video"
+                  />
+
                   <video
                     ref={remoteVideoRef}
                     className="remote-video"
                     autoPlay
                   />
+
                   <div className="videocall-btn">
                     <div>
                       <button className="btn option">
