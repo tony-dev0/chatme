@@ -168,8 +168,31 @@ const ChatLayout = () => {
     });
 
     socket.current.on("webrtc-offer", async ({ from, offer }: any) => {
+      // Always create peer connection and get local stream if not present
       if (!peerConnection.current) {
-        return;
+        peerConnection.current = new RTCPeerConnection(iceServers);
+        // Get local media if not already
+        let stream = localStream;
+        if (!stream) {
+          stream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          setLocalStream(stream);
+          attachLocalStream(stream);
+        }
+        stream.getTracks().forEach((track) => {
+          peerConnection.current!.addTrack(track, stream!);
+        });
+        peerConnection.current.ontrack = attachRemoteStream;
+        peerConnection.current.onicecandidate = (event) => {
+          if (event.candidate) {
+            socket.current.emit("ice-candidate", {
+              to: from,
+              candidate: event.candidate,
+            });
+          }
+        };
       }
       await peerConnection.current.setRemoteDescription(
         new RTCSessionDescription(offer)
