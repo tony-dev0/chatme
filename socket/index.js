@@ -79,29 +79,6 @@ io.on("connection", (socket) => {
     }
   });
 
-  socket.on("offer", ({ to, offer }) => {
-    const user = getUser(to);
-    if (user) {
-      io.to(user.socketId).emit("offer-received", { from: socket.id, offer });
-    }
-  });
-
-  socket.on("answer", ({ to, answer }) => {
-    const user = getUser(to);
-    if (user) {
-      io.to(user.socketId).emit("answer-received", { answer });
-    }
-  });
-
-  socket.on("ice-candidate", ({ to, candidate }) => {
-    const user = getUser(to);
-    if (user) {
-      io.to(user.socketId).emit("ice-candidate", {
-        candidate,
-      });
-    }
-  });
-
   socket.on("end-call", ({ to }) => {
     const user = getUser(to);
     if (user) {
