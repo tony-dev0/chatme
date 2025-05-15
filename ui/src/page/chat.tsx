@@ -21,7 +21,11 @@ const ChatLayout = () => {
   const [arrivalMessage, setArrivalMessage] = useState<any>(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
   const socket = useRef<any>(null);
-  const [caller, setCaller] = useState<any>({ username: null, gender: null });
+  const [caller, setCaller] = useState<any>({
+    _id: null,
+    username: null,
+    gender: null,
+  });
   const [callReceiver, setCallReceiver] = useState<any>(null);
   const [outgoingCall, setOutgoingCall] = useState(false);
   const [IncomingCall, setIncomingCall] = useState(false);
@@ -178,7 +182,7 @@ const ChatLayout = () => {
       setCallReceiver(receiver);
       setOutgoingCall(true);
       socket.current.emit("call-user", {
-        caller: { username: user.username, gender: user.gender },
+        caller: { _id: user._id, username: user.username, gender: user.gender },
         receiverId: receiver._id,
       });
 
@@ -228,7 +232,7 @@ const ChatLayout = () => {
     try {
       setIncomingCall(false);
       setOnVideoCall(true);
-      socket.current.emit("call-accepted", { to: user._id });
+      socket.current.emit("call-accepted", { to: caller._id });
 
       // Get local media stream
       const stream = await navigator.mediaDevices.getUserMedia({
