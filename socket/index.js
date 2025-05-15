@@ -86,6 +86,37 @@ io.on("connection", (socket) => {
     }
   });
 
+  // WebRTC signaling handlers
+  socket.on("webrtc-offer", ({ to, offer }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("webrtc-offer", {
+        from: socket.id,
+        offer,
+      });
+    }
+  });
+
+  socket.on("webrtc-answer", ({ to, answer }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("webrtc-answer", {
+        from: socket.id,
+        answer,
+      });
+    }
+  });
+
+  socket.on("ice-candidate", ({ to, candidate }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("ice-candidate", {
+        from: socket.id,
+        candidate,
+      });
+    }
+  });
+
   //when disconnect
   socket.on("disconnect", () => {
     console.log("a user disconnected");
