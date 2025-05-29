@@ -1,67 +1,50 @@
 import ChatBox from "../components/ChatBox";
 import ChatInput from "../components/ChatInput";
-import ChatList from "../components/ChatList";
-import MALE from "../assets/avatars/male.jpg";
-import FEMALE from "../assets/avatars/female.jpg";
-import { useContext, useRef } from "react";
+import { useContext, useLayoutEffect, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import ChatTop from "../components/ChatTop";
-import logo from "../assets/logo128.png";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import axios from "axios";
-import Notification from "../components/Notification";
-import { io } from "socket.io-client";
+import Sidebar from "../components/Sidebar";
+import VideoCall from "../components/VideoCall";
+import { useSocket } from "../context/SocketContext";
+import VoiceCall from "../components/VoiceCall";
 
 const ChatLayout = () => {
-  const { user, dispatch } = useContext(AuthContext);
-  const [messages, setMessages] = useState<any>([]); // Initialize messages as an empty array
+  const socket = useSocket();
+  const { user } = useContext(AuthContext);
+  const [messages, setMessages] = useState<any>([]);
   const [receiver, setReceiver] = useState<any>(null);
   const [currentChat, setCurrentChat] = useState<any>(null);
   const [arrivalMessage, setArrivalMessage] = useState<any>(null);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  const socket = useRef<any>(null);
-  const [caller, setCaller] = useState<any>({
-    _id: null,
-    username: null,
-    gender: null,
-  });
   const [callReceiver, setCallReceiver] = useState<any>(null);
-  const [outgoingCall, setOutgoingCall] = useState(false);
-  const [IncomingCall, setIncomingCall] = useState(false);
-  const [onVideoCall, setOnVideoCall] = useState(false);
-  const localVideoRef = useRef<HTMLVideoElement>(null);
-  const remoteVideoRef = useRef<HTMLVideoElement>(null);
+  const [onCall, setOnCall] = useState<boolean>(false);
+  const [outgoingVideoCall, setOutgoingVideoCall] = useState(false);
+  const [incomingVideoCall, setincomingVideoCall] = useState(false);
+  const [outgoingVoiceCall, setOutgoingVoiceCall] = useState(false);
+  const [incomingVoiceCall, setincomingVoiceCall] = useState(false);
   const peerConnection = useRef<RTCPeerConnection | null>(null);
-  const [localStream, setLocalStream] = useState<MediaStream | null>(null);
+  const localVideoStream = useRef<MediaStream | null>(null);
+  const remoteVideoStream = useRef<MediaStream | null>(null);
+  const localAudioStream = useRef<MediaStream | null>(null);
+  const remoteAudioStream = useRef<MediaStream | null>(null);
 
   // ICE servers configuration
-  const iceServers = {
-    iceServers: [{ urls: "stun:stun.l.google.com:19302" }],
+  const peerConnectionConfig: RTCConfiguration = {
+    iceServers: [
+      {
+        urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"],
+      },
+    ],
   };
 
-  // Helper function to attach stream to video element
-  const attachLocalStream = (stream: MediaStream) => {
-    if (localVideoRef.current) {
-      localVideoRef.current.srcObject = stream;
-    }
-  };
-  const attachRemoteStream = (event: RTCTrackEvent) => {
-    console.log("Received remote track", event.streams[0]);
-    if (remoteVideoRef.current && event.streams[0]) {
-      remoteVideoRef.current.srcObject = event.streams[0];
-    }
-  };
-
-  useEffect(() => {
-    socket.current = io(import.meta.env.VITE_SOCKET_URL, {
-      transports: ["websocket"],
-      secure: true,
-    });
-    socket.current.on("connect_error", (err: any) => {
+  useLayoutEffect(() => {
+    socket.on("connect_error", (err: any) => {
       console.warn(`connect_error due to ${err.message}`);
     });
-    socket.current.on("getMessage", (data: any) => {
+    socket.on("getMessage", (data: any) => {
       setArrivalMessage({
         sender: data.senderId,
         members: data.members,
@@ -69,75 +52,12 @@ const ChatLayout = () => {
         createdAt: Date.now(),
       });
     });
-    socket.current.on("incoming-call", (caller: any) => {
-      if (outgoingCall || IncomingCall) {
-        console.warn("line busy");
-        return;
-      }
-      setCaller(caller);
-      setIncomingCall(true);
-    });
-
-    socket.current.on("call-answered", async ({ from }: any) => {
-      console.warn(`call from ${from} answered`);
-      setOutgoingCall(false);
-      setOnVideoCall(true);
-    });
-
-    socket.current.on("call-ended", ({ to }: any) => {
-      console.log("socket call ended entered", to);
-      closeCallConnection();
-    });
-
-    socket.current.on("webrtc-offer", async ({ from, offer }: any) => {
-      if (!peerConnection.current) return;
-
-      try {
-        await peerConnection.current.setRemoteDescription(
-          new RTCSessionDescription(offer)
-        );
-        const answer = await peerConnection.current.createAnswer();
-        await peerConnection.current.setLocalDescription(answer);
-        socket.current.emit("webrtc-answer", {
-          to: from,
-          answer,
-        });
-      } catch (error) {
-        console.error("Error handling offer:", error);
-      }
-    });
-
-    socket.current.on("webrtc-answer", async ({ answer }: any) => {
-      if (!peerConnection.current) return;
-
-      try {
-        await peerConnection.current.setRemoteDescription(
-          new RTCSessionDescription(answer)
-        );
-      } catch (error) {
-        console.error("Error handling answer:", error);
-      }
-    });
-
-    socket.current.on("ice-candidate", async ({ candidate }: any) => {
-      if (!peerConnection.current) return;
-
-      try {
-        await peerConnection.current.addIceCandidate(
-          new RTCIceCandidate(candidate)
-        );
-      } catch (error) {
-        console.error("Error adding received ice candidate:", error);
-      }
-    });
-
+    // Clean up listeners on unmount
     return () => {
-      socket.current?.off("webrtc-offer");
-      socket.current?.off("webrtc-answer");
-      socket.current?.off("ice-candidate");
-      closeCallConnection();
+      socket.off("connect_error");
+      socket.off("getMessage");
     };
-  }, []);
+  }, [socket]);
 
   useEffect(() => {
     if (arrivalMessage) {
@@ -149,13 +69,16 @@ const ChatLayout = () => {
   }, [arrivalMessage]);
 
   useEffect(() => {
-    socket.current.emit("addUser", user._id);
-    socket.current.on("getUsers", (users: any) => {
+    socket.emit("addUser", user._id);
+    socket.on("getUsers", (users: any) => {
       setOnlineUsers(
         user.friends.filter((f: any) => users.some((u: any) => u.userId === f))
       );
     });
-  }, [user]);
+    return () => {
+      socket.off("getUsers");
+    };
+  }, [user, socket]);
 
   useEffect(() => {
     const getMessages = async () => {
@@ -169,38 +92,98 @@ const ChatLayout = () => {
     getMessages();
   }, []);
 
+  const getVideoStream = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+        },
+      });
+      localVideoStream.current = stream;
+      return stream;
+    } catch (err) {
+      console.log("failed to get stream", err);
+      localVideoStream.current = null;
+      return null;
+    }
+  };
+
+  const getAudioStream = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        audio: {
+          echoCancellation: true,
+          noiseSuppression: true,
+        },
+      });
+      localAudioStream.current = stream;
+      return stream;
+    } catch (err) {
+      console.log("failed to get stream", err);
+      localAudioStream.current = null;
+      return null;
+    }
+  };
+
   const startVideoCall = async () => {
     try {
       setCallReceiver(receiver);
-      setOutgoingCall(true);
-      socket.current.emit("call-user", {
-        caller: { _id: user._id, username: user.username, gender: user.gender },
-        receiverId: receiver._id,
+      setOnCall(true);
+      setOutgoingVideoCall(true);
+
+      // Get local media stream first
+      const stream = await getVideoStream();
+      if (!stream) {
+        throw new Error("Failed to get local stream");
+      }
+      localVideoStream.current = stream;
+
+      // Create peer connection
+      peerConnection.current = new RTCPeerConnection(peerConnectionConfig);
+
+      // Monitor connection state changes
+      peerConnection.current.onconnectionstatechange = () => {
+        console.log(
+          "Connection state:",
+          peerConnection.current?.connectionState
+        );
+      };
+
+      peerConnection.current.oniceconnectionstatechange = () => {
+        console.log(
+          "ICE Connection state:",
+          peerConnection.current?.iceConnectionState
+        );
+      };
+
+      peerConnection.current.onsignalingstatechange = () => {
+        console.log("Signaling state:", peerConnection.current?.signalingState);
+      };
+
+      peerConnection.current.onicegatheringstatechange = () => {
+        console.log(
+          "ICE gathering state:",
+          peerConnection.current?.iceGatheringState
+        );
+      };
+
+      // Set up ontrack handler early
+      peerConnection.current.ontrack = (event) => {
+        console.log("Received remote track in startVideoCall");
+        remoteVideoStream.current = event.streams[0];
+      };
+
+      // Add tracks to peer connection
+      stream.getTracks().forEach((track: MediaStreamTrack) => {
+        peerConnection.current?.addTrack(track, stream);
       });
 
-      // Get local media stream
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-      setLocalStream(stream);
-      attachLocalStream(stream);
-
-      // Create and configure peer connection
-      peerConnection.current = new RTCPeerConnection(iceServers);
-
-      // Add local stream tracks to peer connection
-      stream.getTracks().forEach((track) => {
-        peerConnection.current!.addTrack(track, stream);
-      });
-
-      // Handle incoming tracks (remote stream)
-      peerConnection.current.ontrack = attachRemoteStream;
-
-      // Handle and send ICE candidates
+      // Handle ICE candidates
       peerConnection.current.onicecandidate = (event) => {
         if (event.candidate) {
-          socket.current.emit("ice-candidate", {
+          socket.emit("video-call-ice-candidate", {
             to: receiver._id,
             candidate: event.candidate,
           });
@@ -210,129 +193,128 @@ const ChatLayout = () => {
       // Create and send offer
       const offer = await peerConnection.current.createOffer();
       await peerConnection.current.setLocalDescription(offer);
-      socket.current.emit("webrtc-offer", {
-        to: receiver._id,
-        offer,
+
+      console.log(user);
+
+      socket.emit("video-call-offer", {
+        caller: {
+          _id: user._id,
+          username: user.username,
+          profilePic: user?.profilePic,
+        },
+        receiverId: receiver._id,
+        offer: {
+          type: "offer",
+          sdp: offer.sdp,
+        },
       });
     } catch (error) {
       console.error("Error starting video call:", error);
-      closeCallConnection();
     }
   };
-  const answerCall = async () => {
+  const startVoiceCall = async () => {
     try {
-      setIncomingCall(false);
-      setOnVideoCall(true);
+      setCallReceiver(receiver);
+      setOnCall(true);
+      setOutgoingVoiceCall(true);
 
       // Get local media stream first
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: true,
-      });
-      setLocalStream(stream);
-      attachLocalStream(stream);
+      const stream = await getAudioStream();
+      if (!stream) {
+        throw new Error("Failed to get local stream");
+      }
+      localAudioStream.current = stream;
 
-      // Create and configure peer connection
-      peerConnection.current = new RTCPeerConnection(iceServers);
+      // Create peer connection
+      peerConnection.current = new RTCPeerConnection(peerConnectionConfig);
 
-      // Add local stream tracks to peer connection
-      stream.getTracks().forEach((track) => {
-        peerConnection.current!.addTrack(track, stream);
-      });
-
-      // Handle incoming tracks (remote stream)
-      peerConnection.current.ontrack = (event) => {
-        console.log("Received remote track", event.streams[0]);
-        if (remoteVideoRef.current) {
-          remoteVideoRef.current.srcObject = event.streams[0];
-        }
+      // Monitor connection state changes
+      peerConnection.current.onconnectionstatechange = () => {
+        console.log(
+          "Connection state:",
+          peerConnection.current?.connectionState
+        );
       };
 
-      // Handle and send ICE candidates
+      peerConnection.current.oniceconnectionstatechange = () => {
+        console.log(
+          "ICE Connection state:",
+          peerConnection.current?.iceConnectionState
+        );
+      };
+
+      peerConnection.current.onsignalingstatechange = () => {
+        console.log("Signaling state:", peerConnection.current?.signalingState);
+      };
+
+      peerConnection.current.onicegatheringstatechange = () => {
+        console.log(
+          "ICE gathering state:",
+          peerConnection.current?.iceGatheringState
+        );
+      };
+
+      // Set up ontrack handler early
+      peerConnection.current.ontrack = (event) => {
+        console.log("Received remote track in startVideoCall");
+        remoteAudioStream.current = event.streams[0];
+      };
+
+      // Add tracks to peer connection
+      stream.getTracks().forEach((track: MediaStreamTrack) => {
+        peerConnection.current?.addTrack(track, stream);
+      });
+
+      // Handle ICE candidates
       peerConnection.current.onicecandidate = (event) => {
         if (event.candidate) {
-          socket.current.emit("ice-candidate", {
-            to: caller._id,
+          socket.emit("voice-call-ice-candidate", {
+            to: receiver._id,
             candidate: event.candidate,
           });
         }
       };
 
-      // Now notify the caller that we've accepted
-      socket.current.emit("call-accepted", { to: caller._id });
-      console.log(
-        "(answer call)remote video - ",
-        remoteVideoRef.current?.srcObject
-      );
+      // Create and send offer
+      const offer = await peerConnection.current.createOffer();
+      await peerConnection.current.setLocalDescription(offer);
+
+      socket.emit("voice-call-offer", {
+        caller: {
+          _id: user._id,
+          username: user.username,
+          profilePic: user?.profilePic,
+        },
+        receiverId: receiver._id,
+        offer: {
+          type: "offer",
+          sdp: offer.sdp,
+        },
+      });
     } catch (error) {
-      console.error("Error answering call:", error);
-      closeCallConnection();
+      console.error("Error starting video call:", error);
     }
-  };
-
-  const closeCallConnection = () => {
-    setOnVideoCall(false);
-    setOutgoingCall(false);
-    setIncomingCall(false);
-
-    // Close peer connection
-    if (peerConnection.current) {
-      peerConnection.current.close();
-      peerConnection.current = null;
-    }
-
-    // Stop all tracks in local stream
-    if (localStream) {
-      localStream.getTracks().forEach((track) => track.stop());
-      setLocalStream(null);
-    }
-
-    // Clear video elements
-    if (localVideoRef.current) localVideoRef.current.srcObject = null;
-    if (remoteVideoRef.current) remoteVideoRef.current.srcObject = null;
-  };
-
-  const endCall = () => {
-    closeCallConnection();
-    socket.current.emit("end-call", { to: receiver?._id || user._id });
   };
 
   return (
     <main>
       <div className="layout">
-        <div className="sidebar" id="sidebar" style={{ marginTop: "-10px" }}>
-          <div className="ms-3 mb-4 d-flex align-items-center justify-content-between px-2">
-            <div className="d-flex align-items-center gap-2">
-              <img src={logo} alt="" width={35} height={30} />
-              <h5 className="text-primary mt-2">Chat.me</h5>
-            </div>
-            <Notification user={user} dispatch={dispatch} />
-          </div>
-          <div className="container">
-            <div className="col-md-12">
-              <div className="tab-content">
-                <ChatList
-                  user={user}
-                  setReceiver={setReceiver}
-                  onlineUsers={onlineUsers}
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <Sidebar setReceiver={setReceiver} onlineUsers={onlineUsers} />
         <div className="main">
           <div
             className={
-              onVideoCall || outgoingCall || IncomingCall
+              localAudioStream.current || localVideoStream.current || onCall
                 ? "chat d-none"
                 : "chat"
             }
             id="chat1"
+            style={{ zIndex: 999 }}
           >
             <ChatTop
               user={user}
               receiver={receiver}
               onlineUsers={onlineUsers}
+              startVoiceCall={startVoiceCall}
               startVideoCall={startVideoCall}
             />
             <ChatBox
@@ -341,131 +323,39 @@ const ChatLayout = () => {
               receiver={receiver}
               currentChat={currentChat}
               setCurrentChat={setCurrentChat}
-              socket={socket}
             />
             <ChatInput
               user={user}
               receiver={receiver}
               setMessages={setMessages}
-              socket={socket}
             />
           </div>
-
-          {/* outgoing video call start */}
-          {outgoingCall && (
-            <div className="call d-block">
-              <div className="content">
-                <div className="container">
-                  <div className="col-md-12">
-                    <div className="inside">
-                      <div className="panel">
-                        <div className="participant">
-                          <img
-                            className="avatar-xxl"
-                            src={
-                              callReceiver?.gender === "male" ? MALE : FEMALE
-                            }
-                            alt="avatar"
-                          />
-                          <span>Calling {callReceiver?.username}</span>
-                          <span>Connecting...</span>
-                        </div>
-                        <div className="options">
-                          <button className="btn option">
-                            <i className="material-icons md-30">mic</i>
-                          </button>
-                          <button
-                            className="btn option call-end"
-                            onClick={endCall}
-                          >
-                            <i className="material-icons md-30">call_end</i>
-                          </button>
-                          <button className="btn option">
-                            <i className="material-icons md-30">videocam</i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {/* outgoing video call end */}
-          {/* Incoming video call start */}
-          {IncomingCall && (
-            <div className="call d-block">
-              <div className="content">
-                <div className="container">
-                  <div className="col-md-12">
-                    <div className="inside">
-                      <div className="panel">
-                        <div className="participant">
-                          <img
-                            className="avatar-xxl"
-                            src={caller?.gender === "male" ? MALE : FEMALE}
-                            alt="avatar"
-                          />
-                          <span>Incoming Call...</span>
-                          <span>{caller?.username}</span>
-                        </div>
-                        <div className="options">
-                          <button
-                            className="btn option call-answer"
-                            onClick={answerCall}
-                          >
-                            <i className="material-icons md-30">call</i>
-                          </button>
-                          <button
-                            className="btn option call-end"
-                            onClick={endCall}
-                          >
-                            <i className="material-icons md-30">call_end</i>
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {/* Incoming video call end */}
-          {/* video call stream start */}
-          {onVideoCall && (
-            <div className="call d-block bg-dark-light h-100">
-              <div className="col-md-12">
-                <div className="video-stream">
-                  {" "}
-                  <video ref={localVideoRef} autoPlay className="local-video" />
-                  <video
-                    ref={remoteVideoRef}
-                    className="remote-video"
-                    autoPlay
-                  />
-                  <div className="videocall-btn">
-                    <div>
-                      <button className="btn option">
-                        <i className="material-icons md-24 text-white">mic</i>
-                      </button>
-
-                      <button className="btn option call-end" onClick={endCall}>
-                        <i className="material-icons md-24 text-white">
-                          call_end
-                        </i>
-                      </button>
-                      <button className="btn option">
-                        <i className="material-icons md-24 text-white">
-                          videocam
-                        </i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-          {/* video call stream end */}
+          <VideoCall
+            setOnCall={setOnCall}
+            peerConnection={peerConnection}
+            getVideoStream={getVideoStream}
+            callReceiver={callReceiver}
+            setCallReceiver={setCallReceiver}
+            localVideoStream={localVideoStream}
+            remoteVideoStream={remoteVideoStream}
+            outgoingVideoCall={outgoingVideoCall}
+            setOutgoingVideoCall={setOutgoingVideoCall}
+            incomingVideoCall={incomingVideoCall}
+            setincomingVideoCall={setincomingVideoCall}
+          />
+          <VoiceCall
+            setOnCall={setOnCall}
+            peerConnection={peerConnection}
+            getAudioStream={getAudioStream}
+            callReceiver={callReceiver}
+            setCallReceiver={setCallReceiver}
+            localAudioStream={localAudioStream}
+            remoteAudioStream={remoteAudioStream}
+            outgoingVoiceCall={outgoingVoiceCall}
+            setOutgoingVoiceCall={setOutgoingVoiceCall}
+            incomingVoiceCall={incomingVoiceCall}
+            setincomingVoiceCall={setincomingVoiceCall}
+          />
         </div>
       </div>
     </main>
