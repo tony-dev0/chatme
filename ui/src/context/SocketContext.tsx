@@ -2,7 +2,7 @@ import React, { createContext, useContext, useRef } from "react";
 import { io, Socket } from "socket.io-client";
 
 // Create the socket instance
-const socket = io(import.meta.env.VITE_SOCKET_URL_MOBILE, {
+const socket = io(import.meta.env.VITE_SOCKET_URL, {
   transports: ["websocket"],
   secure: true,
 });
