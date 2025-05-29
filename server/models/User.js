@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema(
       type: String,
       default: "male",
     },
+    profilePic: {
+      type: String,
+      default: "../assets/avatars/default.jpg",
+    },
     friends: {
       type: Array,
       default: [],
