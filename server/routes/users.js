@@ -64,8 +64,8 @@ router.get("/friends/:userId", async (req, res) => {
     );
     let friendList = [];
     friends.map((friend) => {
-      const { _id, username, email, gender } = friend;
-      friendList.push({ _id, username, email, gender });
+      const { _id, username, email, profilePic } = friend;
+      friendList.push({ _id, username, email, profilePic });
     });
     res.status(200).json(friendList);
   } catch (err) {
@@ -119,8 +119,8 @@ router.get("/:userId/requests", async (req, res) => {
     );
     let friendRequestList = [];
     userDetails.map((userDetail) => {
-      const { _id, username, email, gender } = userDetail;
-      friendRequestList.push({ _id, username, email, gender });
+      const { _id, username, email, profilePic } = userDetail;
+      friendRequestList.push({ _id, username, email, profilePic });
     });
     res.status(200).json(friendRequestList);
   } catch (err) {

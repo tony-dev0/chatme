@@ -5,9 +5,20 @@ const bcrypt = require("bcrypt");
 //REGISTER
 router.post("/register", async (req, res) => {
   try {
+    const findUser = await User.findOne({ email: req.body.email });
+    // Check if user exists
+    if (findUser) {
+      return res.status(500).json("User already exist"); // Return here
+    }
     //generate new password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
+    let profilePic;
+
+    // assign default profile pic based on gender
+    req.body.gender == "male"
+      ? (profilePic = "../assets/avatars/male.jpg")
+      : (profilePic = "../assets/avatars/female.jpg");
 
     //create new user
     const newUser = new User({
@@ -15,6 +26,7 @@ router.post("/register", async (req, res) => {
       email: req.body.email,
       gender: req.body.gender,
       password: hashedPassword,
+      profilePic: profilePic,
     });
 
     //save user and respond
