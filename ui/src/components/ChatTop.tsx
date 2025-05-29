@@ -1,5 +1,3 @@
-import MALE from "../assets/avatars/male.jpg";
-import FEMALE from "../assets/avatars/female.jpg";
 import { useState } from "react";
 import { DeleteConfirmationModal } from "./Modals";
 import axios from "axios";
@@ -7,9 +5,15 @@ import toast from "react-hot-toast";
 import Dropdown from "react-bootstrap/Dropdown";
 import "bootstrap/dist/css/bootstrap.min.css";
 
-const ChatTop = ({ user, receiver, onlineUsers, startVideoCall }: any) => {
+const ChatTop = ({
+  user,
+  receiver,
+  onlineUsers,
+  startVoiceCall,
+  startVideoCall,
+}: any) => {
   const [open, setOpen] = useState(false);
-
+  const profilePic = new URL(receiver?.profilePic, import.meta.url).href;
   const handleClose = () => {
     setOpen(false);
   };
@@ -39,7 +43,7 @@ const ChatTop = ({ user, receiver, onlineUsers, startVideoCall }: any) => {
               <a href="#">
                 <img
                   className="avatar-md"
-                  src={receiver?.gender == "male" ? MALE : FEMALE}
+                  src={profilePic}
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Keith"
@@ -63,7 +67,10 @@ const ChatTop = ({ user, receiver, onlineUsers, startVideoCall }: any) => {
                   <span>Offline</span>
                 )}
               </div>
-              <button className="btn connect d-md-block d-none">
+              <button
+                className="btn connect d-md-block d-none"
+                onClick={startVoiceCall}
+              >
                 <i className="material-icons md-30">phone_in_talk</i>
               </button>
               <button
@@ -86,7 +93,10 @@ const ChatTop = ({ user, receiver, onlineUsers, startVideoCall }: any) => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu className="dropdown-menu-right">
-                  <Dropdown.Item className="connect hover-blue">
+                  <Dropdown.Item
+                    className="connect hover-blue"
+                    onClick={startVoiceCall}
+                  >
                     <i className="material-icons">phone_in_talk</i>Voice Call
                   </Dropdown.Item>
                   <Dropdown.Item

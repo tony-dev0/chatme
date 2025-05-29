@@ -4,9 +4,6 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import Modal from "react-bootstrap/Modal";
 import toast from "react-hot-toast";
-import MALE from "../assets/avatars/male.jpg";
-import FEMALE from "../assets/avatars/female.jpg";
-// import { AuthContext } from "../context/AuthContext";
 
 export const AddFriendRequestModal = ({
   handleSubmit,
@@ -121,7 +118,7 @@ export const ViewFriendRequestModal = ({
             >
               <img
                 className="avatar-md"
-                src={friend.gender === "male" ? MALE : FEMALE}
+                src={new URL(friend?.profilePic, import.meta.url).href}
                 data-toggle="tooltip"
                 data-placement="top"
                 title={friend.name}

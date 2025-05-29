@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { format } from "timeago.js";
-import MALE from "../assets/avatars/male.jpg";
-import FEMALE from "../assets/avatars/female.jpg";
+import { useSocket } from "../context/SocketContext";
 import "../assets/css/chatme.css";
 
 const ChatBox = ({
@@ -10,11 +9,12 @@ const ChatBox = ({
   receiver,
   currentChat,
   setCurrentChat,
-  socket,
 }: any) => {
+  const socket = useSocket();
   const [isTyping, setIsTyping] = useState(false);
-
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  const profilePic = new URL(receiver?.profilePic, import.meta.url).href;
 
   useEffect(() => {
     if (receiver) {
@@ -34,23 +34,23 @@ const ChatBox = ({
   }, [currentChat]);
 
   useEffect(() => {
-    if (!socket?.current) return;
+    if (!socket) return;
 
-    socket.current.on("typing", ({ senderId }: any) => {
+    socket.on("typing", ({ senderId }: any) => {
       if (senderId === receiver._id) {
         setIsTyping(true);
       }
     });
 
-    socket.current.on("stopTyping", ({ senderId }: any) => {
+    socket.on("stopTyping", ({ senderId }: any) => {
       if (senderId === receiver._id) {
         setIsTyping(false);
       }
     });
 
     return () => {
-      socket.current?.off("typing");
-      socket.current?.off("stopTyping");
+      socket.off("typing");
+      socket.off("stopTyping");
     };
   }, [receiver, socket]);
 
@@ -75,7 +75,7 @@ const ChatBox = ({
                 <div className="message" key={i}>
                   <img
                     className="avatar-md"
-                    src={receiver?.gender == "male" ? MALE : FEMALE}
+                    src={profilePic}
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Keith"
@@ -109,10 +109,7 @@ const ChatBox = ({
           )}
           {isTyping && (
             <div className="message">
-              <img
-                className="avatar-md"
-                src={receiver?.gender == "male" ? MALE : FEMALE}
-              />
+              <img className="avatar-md" src={profilePic} />
               <div className="text-main">
                 <div className="text-group">
                   <div className="text typing">

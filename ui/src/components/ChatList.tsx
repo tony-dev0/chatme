@@ -1,6 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-import MALE from "../assets/avatars/male.jpg";
-import FEMALE from "../assets/avatars/female.jpg";
 import axios from "axios";
 import { AddFriendRequestModal } from "./Modals";
 import toast from "react-hot-toast";
@@ -13,7 +11,6 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const username = usernameRef.current?.value;
@@ -140,7 +137,7 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
               >
                 <img
                   className="avatar-md"
-                  src={c.gender == "male" ? MALE : FEMALE}
+                  src={new URL(c?.profilePic, import.meta.url).href}
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Janette"

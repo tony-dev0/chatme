@@ -1,14 +1,16 @@
 import { useState, useEffect } from "react";
+import { useSocket } from "../context/SocketContext";
 import axios from "axios";
 
-const ChatInput = ({ user, receiver, setMessages, socket }: any) => {
+const ChatInput = ({ user, receiver, setMessages }: any) => {
+  const socket = useSocket();
   const [newMessage, setNewMessage] = useState("");
   const [isTyping, setIsTyping] = useState(false);
 
   const handleTyping = () => {
     if (!isTyping) {
       setIsTyping(true);
-      socket.current.emit("typing", {
+      socket.emit("typing", {
         senderId: user._id,
         receiverId: receiver._id,
       });
@@ -18,7 +20,7 @@ const ChatInput = ({ user, receiver, setMessages, socket }: any) => {
   const handleStopTyping = () => {
     if (isTyping) {
       setIsTyping(false);
-      socket.current.emit("stopTyping", {
+      socket.emit("stopTyping", {
         senderId: user._id,
         receiverId: receiver._id,
       });
@@ -26,20 +28,21 @@ const ChatInput = ({ user, receiver, setMessages, socket }: any) => {
   };
 
   useEffect(() => {
-    const timeout = setTimeout(handleStopTyping, 2000);
+    const timeout = setTimeout(handleStopTyping, 1000);
     return () => clearTimeout(timeout);
   }, [newMessage]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!receiver) return;
+    if (!newMessage.trim()) return;
     const message = {
       sender: user._id,
       text: newMessage,
       members: [user._id, receiver._id],
     };
 
-    socket.current.emit("sendMessage", {
+    socket.emit("sendMessage", {
       senderId: user._id,
       receiverId: receiver._id,
       members: [user._id, receiver._id],

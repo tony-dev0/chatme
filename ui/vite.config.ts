@@ -12,5 +12,8 @@ export default defineConfig({
     host: "0.0.0.0",
     open: true,
   },
+  define: {
+    global: {},
+  },
   plugins: [react()],
 });
