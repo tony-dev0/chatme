@@ -1,13 +1,30 @@
+const https = require("https");
+const fs = require("fs");
 const dotenv = require("dotenv");
+
 dotenv.config();
 
-const io = require("socket.io")(process.env.PORT, {
+const options = {
+  key: fs.readFileSync("cert/cert.key"),
+  cert: fs.readFileSync("cert/cert.crt"),
+};
+
+const httpsServer = https
+  .createServer(options, (req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("Hello, this is a secure socket server!\n");
+  })
+  .listen(process.env.PORT, () => {
+    console.log(`Socket Server is running on port ${process.env.PORT}`);
+  });
+const io = require("socket.io")(httpsServer, {
   cors: {
-    origin: [process.env.ORIGIN],
+    origin: [process.env.ORIGIN, process.env.MOBILE_ORIGIN],
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
   },
+  method: ["GET", "POST"],
 });
 
 let users = [];
@@ -62,58 +79,79 @@ io.on("connection", (socket) => {
     }
   });
 
-  // Handle WebRTC signaling events
-  socket.on("call-user", ({ caller, receiverId }) => {
+  // video call signaling events
+  socket.on("video-call-offer", ({ receiverId, caller, offer }) => {
+    console.log(caller);
     const user = getUser(receiverId);
     if (user) {
-      io.to(user.socketId).emit("incoming-call", caller);
+      io.to(user.socketId).emit("video-call-offer", { caller, offer });
     }
   });
 
-  socket.on("call-accepted", ({ to }) => {
-    console.log("call-accepted block here");
+  socket.on("video-call-answer", ({ to, answer }) => {
     const user = getUser(to);
     if (user) {
-      console.log("call-accepted user found");
-      io.to(user.socketId).emit("call-answered", { from: socket.id });
-    }
-  });
-
-  socket.on("end-call", ({ to }) => {
-    const user = getUser(to);
-    if (user) {
-      io.to(user.socketId).emit("call-ended", { to: socket.id });
-    }
-  });
-
-  // WebRTC signaling handlers
-  socket.on("webrtc-offer", ({ to, offer }) => {
-    const user = getUser(to);
-    if (user) {
-      io.to(user.socketId).emit("webrtc-offer", {
-        from: socket.id,
-        offer,
-      });
-    }
-  });
-
-  socket.on("webrtc-answer", ({ to, answer }) => {
-    const user = getUser(to);
-    if (user) {
-      io.to(user.socketId).emit("webrtc-answer", {
-        from: socket.id,
+      io.to(user.socketId).emit("video-call-answer", {
         answer,
       });
     }
   });
 
-  socket.on("ice-candidate", ({ to, candidate }) => {
+  socket.on("video-call-ice-candidate", ({ to, candidate }) => {
     const user = getUser(to);
     if (user) {
-      io.to(user.socketId).emit("ice-candidate", {
-        from: socket.id,
+      io.to(user.socketId).emit("video-call-ice-candidate", {
         candidate,
       });
+    }
+  });
+  socket.on("video-call-completed", ({ to }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("video-call-completed", { to: socket.id });
+    }
+  });
+  socket.on("end-video-call", ({ to }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("video-call-ended", { to: socket.id });
+    }
+  });
+  // voice call signaling events
+  socket.on("voice-call-offer", ({ receiverId, caller, offer }) => {
+    const user = getUser(receiverId);
+    if (user) {
+      io.to(user.socketId).emit("voice-call-offer", { caller, offer });
+    }
+  });
+
+  socket.on("voice-call-answer", ({ to, answer }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("voice-call-answer", {
+        answer,
+      });
+    }
+  });
+
+  socket.on("voice-call-ice-candidate", ({ to, candidate }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("voice-call-ice-candidate", {
+        candidate,
+      });
+    }
+  });
+  socket.on("voice-call-completed", ({ to }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("voice-call-completed", { to: socket.id });
+    }
+  });
+  socket.on("end-voice-call", ({ to }) => {
+    const user = getUser(to);
+    if (user) {
+      io.to(user.socketId).emit("voice-call-ended", { to: socket.id });
     }
   });
 
@@ -124,3 +162,5 @@ io.on("connection", (socket) => {
     io.emit("getUsers", users);
   });
 });
+
+//
