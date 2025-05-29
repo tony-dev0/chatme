@@ -1,30 +1,13 @@
-const https = require("https");
-const fs = require("fs");
 const dotenv = require("dotenv");
-
 dotenv.config();
 
-const options = {
-  key: fs.readFileSync("cert/cert.key"),
-  cert: fs.readFileSync("cert/cert.crt"),
-};
-
-const httpsServer = https
-  .createServer(options, (req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("Hello, this is a secure socket server!\n");
-  })
-  .listen(process.env.PORT, () => {
-    console.log(`Socket Server is running on port ${process.env.PORT}`);
-  });
-const io = require("socket.io")(httpsServer, {
+const io = require("socket.io")(process.env.PORT, {
   cors: {
-    origin: [process.env.ORIGIN, process.env.MOBILE_ORIGIN],
+    origin: [process.env.ORIGIN],
     methods: ["GET", "POST"],
     transports: ["websocket", "polling"],
     credentials: true,
   },
-  method: ["GET", "POST"],
 });
 
 let users = [];
