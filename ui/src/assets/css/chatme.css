@@ -1661,6 +1661,9 @@ input:checked + .slider:before {
   cursor: pointer;
   animation: pulse 2s infinite;
 }
+.avatar-xxl.animate {
+  animation: pulse 2s infinite;
+}
 .main .call .content .participant {
   margin-bottom: 56px;
 }
