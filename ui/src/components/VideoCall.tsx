@@ -232,7 +232,9 @@ const VideoCall = ({
         console.log("No peer Connection found", to);
         return;
       }
+      console.log("video-call-completed received from", to);
       setOutgoingVideoCall(false);
+      console.log(outgoingVideoCall);
       if (!localVideoStream.current) {
         console.log("localVideoStream is null");
         return;
@@ -343,6 +345,7 @@ const VideoCall = ({
     videoTrack.enabled = !videoTrack.enabled;
     setIsVidOn(videoTrack.enabled);
   }, [localVideoStream]);
+
   return (
     <div>
       {outgoingVideoCall && (

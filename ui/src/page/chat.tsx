@@ -283,7 +283,7 @@ const ChatLayout = () => {
         caller: {
           _id: user._id,
           username: user.username,
-          profilePic: user?.profilePic,
+          profilePic: user.profilePic,
         },
         receiverId: receiver._id,
         offer: {

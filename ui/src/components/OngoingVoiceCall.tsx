@@ -47,7 +47,7 @@ const OngoingVoiceCall = ({
       <div className="col-md-12">
         <div className="audio-stream">
           <div className="content-wrap">
-            <div className="call-info mt-5">
+            <div className="call-info">
               <img
                 className={isMicOn ? "avatar-xxl animate" : "avatar-xxl"}
                 src={new URL(profilePic, import.meta.url).href}

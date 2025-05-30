@@ -50,6 +50,7 @@ const VoiceCall = ({
         return;
       }
       setCaller(caller);
+      setOnCall(true);
       setincomingVoiceCall(true);
       try {
         // Get local stream first
