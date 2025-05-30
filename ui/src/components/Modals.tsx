@@ -118,7 +118,7 @@ export const ViewFriendRequestModal = ({
             >
               <img
                 className="avatar-md"
-                src={new URL(friend?.profilePic, import.meta.url).href}
+                src={friend?.profilePic}
                 data-toggle="tooltip"
                 data-placement="top"
                 title={friend.name}

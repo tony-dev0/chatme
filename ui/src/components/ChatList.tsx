@@ -137,7 +137,7 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
               >
                 <img
                   className="avatar-md"
-                  src={new URL(c?.profilePic, import.meta.url).href}
+                  src={c?.profilePic}
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Janette"

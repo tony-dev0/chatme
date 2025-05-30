@@ -1,7 +1,6 @@
 import React from "react";
 
 const IncomingVideoCall = ({ caller, answerCall, endCall }: any) => {
-  const profilePic = new URL(caller?.profilePic, import.meta.url).href;
   return (
     <div className="call d-block" style={{ zIndex: 9999 }}>
       <div className="content">
@@ -10,7 +9,11 @@ const IncomingVideoCall = ({ caller, answerCall, endCall }: any) => {
             <div className="inside">
               <div className="panel">
                 <div className="participant">
-                  <img className="avatar-xxl" src={profilePic} alt="avatar" />
+                  <img
+                    className="avatar-xxl"
+                    src={caller?.profilePic}
+                    alt="avatar"
+                  />
                   <span>Incoming Call...</span>
                   <span>{caller?.username}</span>
                 </div>

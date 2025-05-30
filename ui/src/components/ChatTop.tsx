@@ -13,7 +13,6 @@ const ChatTop = ({
   startVideoCall,
 }: any) => {
   const [open, setOpen] = useState(false);
-  const profilePic = new URL(receiver?.profilePic, import.meta.url).href;
   const handleClose = () => {
     setOpen(false);
   };
@@ -43,7 +42,7 @@ const ChatTop = ({
               <a href="#">
                 <img
                   className="avatar-md"
-                  src={profilePic}
+                  src={receiver?.profilePic}
                   data-toggle="tooltip"
                   data-placement="top"
                   title="Keith"

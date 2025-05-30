@@ -14,8 +14,6 @@ const ChatBox = ({
   const [isTyping, setIsTyping] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  const profilePic = new URL(receiver?.profilePic, import.meta.url).href;
-
   useEffect(() => {
     if (receiver) {
       const filteredMessages = messages.filter(
@@ -75,7 +73,7 @@ const ChatBox = ({
                 <div className="message" key={i}>
                   <img
                     className="avatar-md"
-                    src={profilePic}
+                    src={receiver.profilePic}
                     data-toggle="tooltip"
                     data-placement="top"
                     title="Keith"
@@ -109,7 +107,7 @@ const ChatBox = ({
           )}
           {isTyping && (
             <div className="message">
-              <img className="avatar-md" src={profilePic} />
+              <img className="avatar-md" src={receiver.profilePic} />
               <div className="text-main">
                 <div className="text-group">
                   <div className="text typing">

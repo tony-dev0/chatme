@@ -50,7 +50,7 @@ const OngoingVoiceCall = ({
             <div className="call-info">
               <img
                 className={isMicOn ? "avatar-xxl animate" : "avatar-xxl"}
-                src={new URL(profilePic, import.meta.url).href}
+                src={profilePic}
                 alt="avatar"
               />
               <div className="timer text-center">
