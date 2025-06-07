@@ -288,6 +288,13 @@ input:-webkit-autofill:active {
 .message .text:not(.me > .text) {
   color: #5d5d5d;
 }
+.spinner-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 @keyframes animation-layer-1 {
   0% {
     transform: rotate(0deg);

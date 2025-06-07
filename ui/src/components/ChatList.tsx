@@ -126,42 +126,55 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
       <div className="contacts">
         <h1>Contacts</h1>
         <div className="list-group" id="contacts" role="tablist">
-          {filteredContacts.map((c: any, i) => {
-            return (
-              <a
-                key={i}
-                href="#"
-                className="filterMembers all online contact"
-                data-toggle="list"
-                onClick={() => setReceiver(c)}
-              >
-                <img
-                  className="avatar-md"
-                  src={c?.profilePic}
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Janette"
-                  alt="avatar"
-                />
-                <div className="status">
-                  {onlineUsers.includes(c._id) ? (
-                    <i className="material-icons online">fiber_manual_record</i>
-                  ) : (
-                    <i className="material-icons offline">
-                      fiber_manual_record
-                    </i>
-                  )}
+          {!filteredContacts ? (
+            <div className="mt-4">
+              <div className="spinner-container">
+                <div className="spinner-border mb-2" role="status">
+                  <span className="visually-hidden">Loading...</span>
                 </div>
-                <div className="data">
-                  <h5>{c.username}</h5>
-                  <p>{c.email}</p>
-                </div>
-                <div className="person-add">
-                  <i className="material-icons">person</i>
-                </div>
-              </a>
-            );
-          })}
+                <span className="text-muted">Loading Contacts...</span>
+              </div>
+            </div>
+          ) : (
+            filteredContacts.map((c: any, i) => {
+              return (
+                <a
+                  key={i}
+                  href="#"
+                  className="filterMembers all online contact"
+                  data-toggle="list"
+                  onClick={() => setReceiver(c)}
+                >
+                  <img
+                    className="avatar-md"
+                    src={c?.profilePic}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Janette"
+                    alt="avatar"
+                  />
+                  <div className="status">
+                    {onlineUsers.includes(c._id) ? (
+                      <i className="material-icons online">
+                        fiber_manual_record
+                      </i>
+                    ) : (
+                      <i className="material-icons offline">
+                        fiber_manual_record
+                      </i>
+                    )}
+                  </div>
+                  <div className="data">
+                    <h5>{c.username}</h5>
+                    <p>{c.email}</p>
+                  </div>
+                  <div className="person-add">
+                    <i className="material-icons">person</i>
+                  </div>
+                </a>
+              );
+            })
+          )}
         </div>
       </div>
       <AddFriendRequestModal
