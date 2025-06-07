@@ -10,6 +10,7 @@ import Sidebar from "../components/Sidebar";
 import VideoCall from "../components/VideoCall";
 import { useSocket } from "../context/SocketContext";
 import VoiceCall from "../components/VoiceCall";
+import { peerConnectionConfig } from "../config.ts";
 
 const ChatLayout = () => {
   const socket = useSocket();
@@ -30,15 +31,6 @@ const ChatLayout = () => {
   const remoteVideoStream = useRef<MediaStream | null>(null);
   const localAudioStream = useRef<MediaStream | null>(null);
   const remoteAudioStream = useRef<MediaStream | null>(null);
-
-  // ICE servers configuration
-  const peerConnectionConfig: RTCConfiguration = {
-    iceServers: [
-      {
-        urls: ["stun:stun.l.google.com:19302", "stun:stun1.l.google.com:19302"],
-      },
-    ],
-  };
 
   useLayoutEffect(() => {
     socket.on("connect_error", (err: any) => {
