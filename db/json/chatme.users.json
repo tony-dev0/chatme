@@ -1,0 +1,219 @@
+[{
+  "_id": {
+    "$oid": "6807e652353edf8053d7e7a2"
+  },
+  "username": "Katie Leana",
+  "email": "katieleana@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "female",
+  "friends": [
+    "68080aa39eaeea50dd15efb6",
+    "6809372ef7e837e6b2c4aa7d"
+  ],
+  "createdAt": {
+    "$date": "2025-04-22T18:56:18.690Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T14:41:49.973Z"
+  },
+  "__v": 0,
+  "friendRequests": [
+    "68093621f7e837e6b2c4aa79"
+  ],
+  "profilePic": "/female.jpg"
+},
+{
+  "_id": {
+    "$oid": "68080aa39eaeea50dd15efb6"
+  },
+  "username": "Marc Anthony",
+  "email": "marcanthony@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "male",
+  "friends": [
+    "68093533f7e837e6b2c4aa75",
+    "680935bcf7e837e6b2c4aa77",
+    "6809372ef7e837e6b2c4aa7d",
+    "6807e652353edf8053d7e7a2",
+    "680bc067d9dd94b5d2cbbe8c",
+    "6814f5ae66f53649136ec4d9"
+  ],
+  "createdAt": {
+    "$date": "2025-04-22T21:31:15.237Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-28T17:36:08.032Z"
+  },
+  "__v": 0,
+  "friendRequests": [
+    "68093651f7e837e6b2c4aa7b"
+  ],
+  "profilePic": "/male.jpg"
+},
+{
+  "_id": {
+    "$oid": "68093533f7e837e6b2c4aa75"
+  },
+  "username": "George Peter",
+  "email": "georgepeter@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "male",
+  "friends": [
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "friendRequests": [],
+  "createdAt": {
+    "$date": "2025-04-23T18:45:07.930Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-09T14:41:49.979Z"
+  },
+  "__v": 0,
+  "profilePic": "/male.jpg"
+},
+{
+  "_id": {
+    "$oid": "680935bcf7e837e6b2c4aa77"
+  },
+  "username": "Mary Vivian",
+  "email": "maryvivy@live.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "female",
+  "friends": [],
+  "friendRequests": [],
+  "createdAt": {
+    "$date": "2025-04-23T18:47:24.831Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-23T18:47:24.831Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-female-2.jpg"
+},
+{
+  "_id": {
+    "$oid": "68093621f7e837e6b2c4aa79"
+  },
+  "username": "michyAndy",
+  "email": "michealandrews@ebox.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "male",
+  "friends": [],
+  "friendRequests": [],
+  "createdAt": {
+    "$date": "2025-04-23T18:49:05.681Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-23T18:49:05.681Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-male-4.jpg"
+},
+{
+  "_id": {
+    "$oid": "68093651f7e837e6b2c4aa7b"
+  },
+  "username": "Collins Mayback",
+  "email": "collymaym@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "male",
+  "friends": [
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "friendRequests": [],
+  "createdAt": {
+    "$date": "2025-04-23T18:49:53.246Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T15:44:38.861Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-male-3.jpg"
+},
+{
+  "_id": {
+    "$oid": "6809372ef7e837e6b2c4aa7d"
+  },
+  "username": "Jennifer Bennett",
+  "email": "mhizjenny@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "female",
+  "friends": [
+    "68080aa39eaeea50dd15efb6",
+    "6807e652353edf8053d7e7a2"
+  ],
+  "friendRequests": [],
+  "createdAt": {
+    "$date": "2025-04-23T18:53:34.487Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-23T18:53:34.487Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-female-5.jpg"
+},
+{
+  "_id": {
+    "$oid": "680bc067d9dd94b5d2cbbe8c"
+  },
+  "username": "Thelma White",
+  "email": "thelma@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "female",
+  "friends": [
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "friendRequests": [
+    "680fb3fe591ebdd8945b0f9b"
+  ],
+  "createdAt": {
+    "$date": "2025-04-25T17:03:36.029Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-25T17:03:36.029Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-female-1.jpg"
+},
+{
+  "_id": {
+    "$oid": "680fb3fe591ebdd8945b0f9b"
+  },
+  "username": "Mohuma Kushar",
+  "email": "mohumkus@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "male",
+  "friends": [],
+  "friendRequests": [],
+  "createdAt": {
+    "$date": "2025-04-28T16:59:42.225Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-28T17:36:08.049Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-male-2.jpg"
+},
+{
+  "_id": {
+    "$oid": "6814f5ae66f53649136ec4d9"
+  },
+  "username": "Rita Owen",
+  "email": "ritaowen@gmail.com",
+  "password": "$2b$10$C4dlPrY0NDYyyyu9yP0qkOibRVUaadDOLozOKO8lUTvDUvhdVDQE2",
+  "gender": "female",
+  "friends": [
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "friendRequests": [
+    "680fb3fe591ebdd8945b0f9b"
+  ],
+  "createdAt": {
+    "$date": "2025-05-02T16:41:18.935Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T16:41:18.935Z"
+  },
+  "__v": 0,
+  "profilePic": "/avatar-female-3.jpg"
+}]

@@ -1,0 +1,18 @@
+[1mdiff --git a/ui/src/assets/css/styles.css b/ui/src/assets/css/styles.css[m
+[1mindex 8d1d0c1..aece47e 100644[m
+[1m--- a/ui/src/assets/css/styles.css[m
+[1m+++ b/ui/src/assets/css/styles.css[m
+[36m@@ -288,12 +288,7 @@[m [minput:-webkit-autofill:active {[m
+ .message .text:not(.me > .text) {[m
+   color: #5d5d5d;[m
+ }[m
+[31m-/* .spinner-container {[m
+[31m-  display: flex;[m
+[31m-  flex-direction: column;[m
+[31m-  align-items: center;[m
+[31m-  justify-content: center;[m
+[31m-} */[m
+[32m+[m
+ @keyframes animation-layer-1 {[m
+   0% {[m
+     transform: rotate(0deg);[m

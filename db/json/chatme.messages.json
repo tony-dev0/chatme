@@ -1,0 +1,360 @@
+[{
+  "_id": {
+    "$oid": "680945a0d70ed3f4660c0107"
+  },
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "Hello George. How are you?",
+  "createdAt": {
+    "$date": "2025-04-27T10:55:12.915Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T10:55:12.915Z"
+  },
+  "__v": 0,
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "68093533f7e837e6b2c4aa75"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68094623d70ed3f4660c0109"
+  },
+  "sender": "68093533f7e837e6b2c4aa75",
+  "text": "I am doing great John",
+  "createdAt": {
+    "$date": "2025-04-27T10:57:23.391Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T10:57:23.391Z"
+  },
+  "__v": 0,
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "68093533f7e837e6b2c4aa75"
+  ]
+},
+{
+  "_id": {
+    "$oid": "68094632d70ed3f4660c010b"
+  },
+  "sender": "68093533f7e837e6b2c4aa75",
+  "text": "I was just about calling you",
+  "createdAt": {
+    "$date": "2025-04-27T10:57:38.680Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T10:57:38.680Z"
+  },
+  "__v": 0,
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "68093533f7e837e6b2c4aa75"
+  ]
+},
+{
+  "_id": {
+    "$oid": "680946abd70ed3f4660c010d"
+  },
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "We've got some killer ideas on the Jet Propulsion project we proposed last week",
+  "createdAt": {
+    "$date": "2025-04-27T10:59:39.904Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T10:59:39.904Z"
+  },
+  "__v": 0,
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "68093533f7e837e6b2c4aa75"
+  ]
+},
+{
+  "_id": {
+    "$oid": "680946f6d70ed3f4660c010f"
+  },
+  "sender": "68093533f7e837e6b2c4aa75",
+  "text": "Wow thats cool. Can you come over lets discuss?",
+  "createdAt": {
+    "$date": "2025-04-27T11:04:54.295Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T11:04:54.295Z"
+  },
+  "__v": 0,
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "68093533f7e837e6b2c4aa75"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6809473bd70ed3f4660c0111"
+  },
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "yeah. see you 6pm",
+  "createdAt": {
+    "$date": "2025-04-27T20:06:03.729Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-27T11:06:03.729Z"
+  },
+  "__v": 0,
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "68093533f7e837e6b2c4aa75"
+  ]
+},
+{
+  "_id": {
+    "$oid": "680948d7d70ed3f4660c0113"
+  },
+  "sender": "6809372ef7e837e6b2c4aa7d",
+  "text": "Hey. its jennifer from history. Remember me?",
+  "createdAt": {
+    "$date": "2025-04-23T20:08:55.645Z"
+  },
+  "updatedAt": {
+    "$date": "2025-04-23T20:08:55.645Z"
+  },
+  "__v": 0,
+  "members": [
+    "6809372ef7e837e6b2c4aa7d",
+    "68080aa39eaeea50dd15efb6"
+  ]
+},
+{
+  "_id": {
+    "$oid": "6814c2918947de6f3a934643"
+  },
+  "members": [
+    "6809372ef7e837e6b2c4aa7d",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6809372ef7e837e6b2c4aa7d",
+  "text": "Hello",
+  "createdAt": {
+    "$date": "2025-05-02T13:03:13.437Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T13:03:13.437Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814c3c48947de6f3a934656"
+  },
+  "members": [
+    "6809372ef7e837e6b2c4aa7d",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6809372ef7e837e6b2c4aa7d",
+  "text": "wow it works",
+  "createdAt": {
+    "$date": "2025-05-02T13:08:20.441Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T13:08:20.441Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814c3f58947de6f3a934658"
+  },
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "6809372ef7e837e6b2c4aa7d"
+  ],
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "let me confirm it",
+  "createdAt": {
+    "$date": "2025-05-02T13:09:09.187Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T13:09:09.187Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814fdeff702b60b2ad684c8"
+  },
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "6814f5ae66f53649136ec4d9"
+  ],
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "Hello Rita",
+  "createdAt": {
+    "$date": "2025-05-02T17:16:31.811Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T17:16:31.811Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6814fdfcf702b60b2ad684ca"
+  },
+  "members": [
+    "6814f5ae66f53649136ec4d9",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6814f5ae66f53649136ec4d9",
+  "text": "hello mac",
+  "createdAt": {
+    "$date": "2025-05-02T17:16:44.553Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-02T17:16:44.553Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68287c2af4831f01d13ccef0"
+  },
+  "members": [
+    "6807e652353edf8053d7e7a2",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6807e652353edf8053d7e7a2",
+  "text": "hey",
+  "createdAt": {
+    "$date": "2025-05-17T12:08:10.878Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-17T12:08:10.878Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "68287c34f4831f01d13ccef2"
+  },
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "6807e652353edf8053d7e7a2"
+  ],
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "whatsup",
+  "createdAt": {
+    "$date": "2025-05-17T12:08:20.223Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-17T12:08:20.223Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6832178b9cf06fea37a49f4c"
+  },
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "6807e652353edf8053d7e7a2"
+  ],
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "hey",
+  "createdAt": {
+    "$date": "2025-05-24T19:01:31.074Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T19:01:31.074Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6832179a9cf06fea37a49f4e"
+  },
+  "members": [
+    "6807e652353edf8053d7e7a2",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6807e652353edf8053d7e7a2",
+  "text": "whatsup",
+  "createdAt": {
+    "$date": "2025-05-24T19:01:46.136Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-24T19:01:46.136Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683394a593eb0fdd8aa3e27f"
+  },
+  "members": [
+    "6807e652353edf8053d7e7a2",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6807e652353edf8053d7e7a2",
+  "text": "yo",
+  "createdAt": {
+    "$date": "2025-05-25T22:07:33.625Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-25T22:07:33.625Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "683394af93eb0fdd8aa3e281"
+  },
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "6807e652353edf8053d7e7a2"
+  ],
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "cool you?",
+  "createdAt": {
+    "$date": "2025-05-25T22:07:43.784Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-25T22:07:43.784Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6833b5de93eb0fdd8aa3e407"
+  },
+  "members": [
+    "6807e652353edf8053d7e7a2",
+    "68080aa39eaeea50dd15efb6"
+  ],
+  "sender": "6807e652353edf8053d7e7a2",
+  "text": "hii",
+  "createdAt": {
+    "$date": "2025-05-26T00:29:18.122Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-26T00:29:18.122Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "6833b60893eb0fdd8aa3e409"
+  },
+  "members": [
+    "68080aa39eaeea50dd15efb6",
+    "6807e652353edf8053d7e7a2"
+  ],
+  "sender": "68080aa39eaeea50dd15efb6",
+  "text": "sorry bout that",
+  "createdAt": {
+    "$date": "2025-05-26T00:30:00.692Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-26T00:30:00.692Z"
+  },
+  "__v": 0
+}]
