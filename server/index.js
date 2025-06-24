@@ -48,7 +48,7 @@ mongoose.connection.on("error", (err) => {
   console.log("mongoDB ERR - ", err);
 });
 
-app.listen(8000, () => {
+app.listen(process.env.PORT, () => {
   connect();
   console.log("Backend server is running!");
 });

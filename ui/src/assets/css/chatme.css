@@ -2127,3 +2127,28 @@ input:checked + .slider:before {
     padding: 0 12px;
   }
 }
+@-webkit-keyframes spinner-border {
+  to {
+    -webkit-transform: rotate(360deg) /* rtl:ignore */;
+    transform: rotate(360deg) /* rtl:ignore */;
+  }
+}
+
+@keyframes spinner-border {
+  to {
+    -webkit-transform: rotate(360deg) /* rtl:ignore */;
+    transform: rotate(360deg) /* rtl:ignore */;
+  }
+}
+
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  vertical-align: -0.125em;
+  border: 0.25em dotted currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  -webkit-animation: 1.2s linear infinite spinner-border;
+  animation: 1.2s linear infinite spinner-border;
+}

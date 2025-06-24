@@ -7,6 +7,7 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
   const [contacts, setContacts] = useState([]);
   const [filteredContacts, setFilteredContacts] = useState([]);
   const usernameRef = useRef<HTMLInputElement | null>(null);
+  const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("noFilter");
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -34,6 +35,7 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
         const res = await axios.get("/users/friends/" + user._id);
         setContacts(res.data);
         setFilteredContacts(res.data);
+        setLoading(false);
       } catch (err) {
         console.log(err);
       }
@@ -126,42 +128,50 @@ const ChatList = ({ user, setReceiver, onlineUsers }: any) => {
       <div className="contacts">
         <h1>Contacts</h1>
         <div className="list-group" id="contacts" role="tablist">
-          {filteredContacts.map((c: any, i) => {
-            return (
-              <a
-                key={i}
-                href="#"
-                className="filterMembers all online contact"
-                data-toggle="list"
-                onClick={() => setReceiver(c)}
-              >
-                <img
-                  className="avatar-md"
-                  src={c?.profilePic}
-                  data-toggle="tooltip"
-                  data-placement="top"
-                  title="Janette"
-                  alt="avatar"
-                />
-                <div className="status">
-                  {onlineUsers.includes(c._id) ? (
-                    <i className="material-icons online">fiber_manual_record</i>
-                  ) : (
-                    <i className="material-icons offline">
-                      fiber_manual_record
-                    </i>
-                  )}
-                </div>
-                <div className="data">
-                  <h5>{c.username}</h5>
-                  <p>{c.email}</p>
-                </div>
-                <div className="person-add">
-                  <i className="material-icons">person</i>
-                </div>
-              </a>
-            );
-          })}
+          {!loading ? (
+            filteredContacts.map((c: any, i) => {
+              return (
+                <a
+                  key={i}
+                  href="#"
+                  className="filterMembers all online contact"
+                  data-toggle="list"
+                  onClick={() => setReceiver(c)}
+                >
+                  <img
+                    className="avatar-md"
+                    src={c?.profilePic}
+                    data-toggle="tooltip"
+                    data-placement="top"
+                    title="Janette"
+                    alt="avatar"
+                  />
+                  <div className="status">
+                    {onlineUsers.includes(c._id) ? (
+                      <i className="material-icons online">
+                        fiber_manual_record
+                      </i>
+                    ) : (
+                      <i className="material-icons offline">
+                        fiber_manual_record
+                      </i>
+                    )}
+                  </div>
+                  <div className="data">
+                    <h5>{c.username}</h5>
+                    <p>{c.email}</p>
+                  </div>
+                  <div className="person-add">
+                    <i className="material-icons">person</i>
+                  </div>
+                </a>
+              );
+            })
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border" role="status"></div>
+            </div>
+          )}
         </div>
       </div>
       <AddFriendRequestModal

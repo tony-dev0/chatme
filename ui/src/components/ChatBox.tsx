@@ -29,7 +29,7 @@ const ChatBox = ({
     scrollRef.current?.lastElementChild?.scrollIntoView({
       behavior: "smooth",
     });
-  }, [currentChat]);
+  }, [currentChat, isTyping]);
 
   useEffect(() => {
     if (!socket) return;

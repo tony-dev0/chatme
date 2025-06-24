@@ -1,0 +1,66 @@
+version: "3.9"
+services:
+  mongo:
+    image: mongo:6
+    container_name: chatme-mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./db:/db
+      - mongodata:/data/db
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    command:
+      [
+        "bash",
+        "-c",
+        "mongod & sleep 5 && mongorestore --drop --db chatme /db/dump && tail -f /dev/null",
+      ]
+
+  server:
+    build: ./server
+    container_name: chatme-server
+    restart: always
+    depends_on:
+      mongo:
+        condition: service_healthy
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/chatme
+      - PORT=5000
+      - ORIGIN=http://localhost:5173
+    ports:
+      - 5000:5000
+    working_dir: /app
+
+  socket:
+    build: ./socket
+    container_name: chatme-socket
+    restart: always
+    depends_on:
+      - mongo
+    environment:
+      - PORT=4000
+      - ORIGIN=http://localhost:5173
+    ports:
+      - 4000:4000
+    working_dir: /app
+
+  ui:
+    build: ./ui
+    container_name: chatme-ui
+    restart: always
+    depends_on:
+      - server
+      - socket
+    environment:
+      - VITE_SOCKET_URL=http://localhost:4000
+      - VITE_API_URL=http://localhost:5000
+    ports:
+      - 5173:5173
+    working_dir: /app
+volumes:
+  mongodata:

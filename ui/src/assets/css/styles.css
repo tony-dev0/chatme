@@ -149,8 +149,9 @@ body {
   }
   .videocall-btn {
     position: absolute;
-    top: 85%;
-    left: 40%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    bottom: 15px;
   }
   .audiocall-btn {
     margin-top: 100px;
@@ -195,8 +196,11 @@ body {
 
   .videocall-btn {
     position: absolute;
-    top: 80%;
-    left: 18%;
+    left: 0;
+    right: 0;
+    margin-inline: auto;
+    width: fit-content;
+    bottom: 15%;
   }
   .audiocall-btn {
     margin-top: 120px;

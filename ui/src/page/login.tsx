@@ -1,5 +1,5 @@
 // import "bootstrap/dist/css/bootstrap.min.css";
-import { useContext, useRef } from "react";
+import { useContext, useEffect, useRef } from "react";
 import logo from "../assets/logo128.png";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
@@ -11,6 +11,11 @@ const Login = () => {
   const email = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
   const { isFetching, dispatch } = useContext(AuthContext);
+  useEffect(() => {
+    if (window.innerWidth < 1024) {
+      toast("use pc for better experience");
+    }
+  }, []);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email.current?.value || !password.current?.value) {
