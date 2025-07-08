@@ -100,4 +100,4 @@ Once the call is completed both the caller and the call receiver have the two st
 
 ![Project overview](assets/preview5.png?raw=true "Project overview 5")
 
-the voice call follows the same implementation but the getIserMedia video option is set to false. the ui only shows the profile pics of the caller/callee and a timer. when the caller/callee ends the call a socket signal is sent to the caller/callee notifying them that the other has ended the call closing the peerconnection and setting both video refs to null.
+the voice call follows the same implementation but the getUserMedia video option is set to false. the ui only shows the profile pics of the caller/callee and a timer. when the caller/callee ends the call a socket signal is sent to the caller/callee notifying them that the other has ended the call closing the peerconnection and setting both video refs to null.
