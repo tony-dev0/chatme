@@ -2,6 +2,15 @@
 
 Chatme Messenger is a real time chat application built with Mern stack . users can chat with friends, accept/decline friend request. P2P Voice and Video Calling. The Libraries used are Socket.io for Signalling (messaging and notification) and WebRTC for Voice and Video Call.
 
+# Features
+
+- peer-to-peer Messaging
+- send and accept friend request
+- filter friends by status
+- typing... animation
+- Voice call
+- Video call
+
 # Project Requirements
 
 - [NodeJS](https://nodejs.org/en/download/) v20.12.1
@@ -50,13 +59,13 @@ Note: Mongodb must be installed and mongostore should be set as environmental va
 
 ## Chatting
 
-![Project overview](assets/chatme10383.png?raw=true "Project overview 1")
+![Project overview](assets/preview1.png?raw=true "Project overview 1")
 
 Once a user types a message and send. the message gets appended to the chatbox, the message is stored in the DB for offline purpose, and the message is sent to the socker server which forwards the message to the intended user. at the reciever's the socket event handler recieves the message and appends it to the messsage state.
 
 ## Video Call
 
-![Project overview](assets/chatme10383.png?raw=true "Project overview 2")
+![Project overview](assets/preview2.png?raw=true "Project overview 2")
 
 Once a user clicks the video call button the startVideo call functions run. the localstream is gotten from getUserMedia.
 
@@ -72,7 +81,7 @@ const offer = await peerConnection.current.createOffer();
 await peerConnection.current.setLocalDescription(offer);
 ```
 
-![Project overview](assets/chatme10383.png?raw=true "Project overview 3")
+![Project overview](assets/preview3.png?raw=true "Project overview 3")
 
 the ice candidates are recieved and sent back, the call offer is recieved, and a webrtc answer is returned to the caller.
 
@@ -83,12 +92,12 @@ await peerConnection.current.setLocalDescription(answer);
 
 once the receiver answers call. the localstream is acquired from the getUserMedia and sent to the caller.the call is completed.
 
-![Project overview](assets/chatme10383.png?raw=true "Project overview 4")
+![Project overview](assets/preview4.png?raw=true "Project overview 4")
 
 Once the call is completed both the caller and the call receiver have the two streams [ localstream and remote stream ] which is displayed on the ui. they can both have the options to mute the call or hide the video.
 
 ## Voice Call
 
-![Project overview](assets/chatme10383.png?raw=true "Project overview 5")
+![Project overview](assets/preview5.png?raw=true "Project overview 5")
 
 the voice call follows the same implementation but the getIserMedia video option is set to false. the ui only shows the profile pics of the caller/callee and a timer. when the caller/callee ends the call a socket signal is sent to the caller/callee notifying them that the other has ended the call closing the peerconnection and setting both video refs to null.
