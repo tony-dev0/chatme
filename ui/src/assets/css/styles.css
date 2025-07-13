@@ -88,6 +88,12 @@ body {
   color: rgba(138, 138, 138, 0.75);
 }
 /* loader css*/
+#loader {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+}
 .loader {
   width: 45px;
   aspect-ratio: 1;

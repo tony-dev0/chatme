@@ -295,7 +295,10 @@ const ChatLayout = () => {
   return (
     <main>
       {isLoading ? (
-        <div className="loader"></div>
+        <div id="loader">
+          {" "}
+          <div className="loader"></div>{" "}
+        </div>
       ) : (
         <div className="layout">
           <Sidebar setReceiver={setReceiver} onlineUsers={onlineUsers} />
