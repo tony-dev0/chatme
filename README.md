@@ -7,7 +7,7 @@ Chatme Messenger is a real time chat application built with Mern stack . users c
 - peer-to-peer Messaging
 - send and accept friend request
 - filter friends by status
-- typing... animation
+- typing indicator 
 - Voice call
 - Video call
 
