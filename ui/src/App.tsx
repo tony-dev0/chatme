@@ -11,7 +11,6 @@ import axios from "axios";
 
 function App() {
   axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
-
   axios.defaults.withCredentials = true;
   const { user } = useContext(AuthContext);
 

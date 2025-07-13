@@ -14,6 +14,7 @@ import { peerConnectionConfig } from "../config.ts";
 
 const ChatLayout = () => {
   const socket = useSocket();
+  const [isLoading, setIsLoading] = useState(true);
   const { user } = useContext(AuthContext);
   const [messages, setMessages] = useState<any>([]);
   const [receiver, setReceiver] = useState<any>(null);
@@ -82,6 +83,9 @@ const ChatLayout = () => {
       }
     };
     getMessages();
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 2000);
   }, []);
 
   const getVideoStream = async () => {
@@ -290,66 +294,72 @@ const ChatLayout = () => {
 
   return (
     <main>
-      <div className="layout">
-        <Sidebar setReceiver={setReceiver} onlineUsers={onlineUsers} />
-        <div className="main">
-          <div
-            className={
-              localAudioStream.current || localVideoStream.current || onCall
-                ? "chat d-none"
-                : "chat"
-            }
-            id="chat1"
-            style={{ zIndex: 999 }}
-          >
-            <ChatTop
-              user={user}
-              receiver={receiver}
-              onlineUsers={onlineUsers}
-              startVoiceCall={startVoiceCall}
-              startVideoCall={startVideoCall}
+      {isLoading ? (
+        <div id="loader">
+          <div className="loader"></div>
+        </div>
+      ) : (
+        <div className="layout">
+          <Sidebar setReceiver={setReceiver} onlineUsers={onlineUsers} />
+          <div className="main">
+            <div
+              className={
+                localAudioStream.current || localVideoStream.current || onCall
+                  ? "chat d-none"
+                  : "chat"
+              }
+              id="chat1"
+              style={{ zIndex: 999 }}
+            >
+              <ChatTop
+                user={user}
+                receiver={receiver}
+                onlineUsers={onlineUsers}
+                startVoiceCall={startVoiceCall}
+                startVideoCall={startVideoCall}
+              />
+              <ChatBox
+                user={user}
+                messages={messages}
+                receiver={receiver}
+                currentChat={currentChat}
+                setCurrentChat={setCurrentChat}
+              />
+              <ChatInput
+                user={user}
+                receiver={receiver}
+                setMessages={setMessages}
+              />
+            </div>
+            <VideoCall
+              setOnCall={setOnCall}
+              peerConnection={peerConnection}
+              getVideoStream={getVideoStream}
+              callReceiver={callReceiver}
+              setCallReceiver={setCallReceiver}
+              localVideoStream={localVideoStream}
+              remoteVideoStream={remoteVideoStream}
+              outgoingVideoCall={outgoingVideoCall}
+              setOutgoingVideoCall={setOutgoingVideoCall}
+              incomingVideoCall={incomingVideoCall}
+              setincomingVideoCall={setincomingVideoCall}
             />
-            <ChatBox
-              user={user}
-              messages={messages}
-              receiver={receiver}
-              currentChat={currentChat}
-              setCurrentChat={setCurrentChat}
-            />
-            <ChatInput
-              user={user}
-              receiver={receiver}
-              setMessages={setMessages}
+            <VoiceCall
+              setOnCall={setOnCall}
+              peerConnection={peerConnection}
+              getAudioStream={getAudioStream}
+              callReceiver={callReceiver}
+              setCallReceiver={setCallReceiver}
+              localAudioStream={localAudioStream}
+              remoteAudioStream={remoteAudioStream}
+              outgoingVoiceCall={outgoingVoiceCall}
+              setOutgoingVoiceCall={setOutgoingVoiceCall}
+              incomingVoiceCall={incomingVoiceCall}
+              setincomingVoiceCall={setincomingVoiceCall}
             />
           </div>
-          <VideoCall
-            setOnCall={setOnCall}
-            peerConnection={peerConnection}
-            getVideoStream={getVideoStream}
-            callReceiver={callReceiver}
-            setCallReceiver={setCallReceiver}
-            localVideoStream={localVideoStream}
-            remoteVideoStream={remoteVideoStream}
-            outgoingVideoCall={outgoingVideoCall}
-            setOutgoingVideoCall={setOutgoingVideoCall}
-            incomingVideoCall={incomingVideoCall}
-            setincomingVideoCall={setincomingVideoCall}
-          />
-          <VoiceCall
-            setOnCall={setOnCall}
-            peerConnection={peerConnection}
-            getAudioStream={getAudioStream}
-            callReceiver={callReceiver}
-            setCallReceiver={setCallReceiver}
-            localAudioStream={localAudioStream}
-            remoteAudioStream={remoteAudioStream}
-            outgoingVoiceCall={outgoingVoiceCall}
-            setOutgoingVoiceCall={setOutgoingVoiceCall}
-            incomingVoiceCall={incomingVoiceCall}
-            setincomingVoiceCall={setincomingVoiceCall}
-          />
         </div>
-      </div>
+      )}
     </main>
   );
 };
